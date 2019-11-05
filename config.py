@@ -4,8 +4,12 @@
 
 import os
 
+
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-hao-guess'
+    SQLALCHEMY_DATABASE_URI = 'mysql:///localhost'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 
 class TranslateLoginForm(object):
     Username = "账号"
