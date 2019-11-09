@@ -3,10 +3,11 @@
 # IDE：PyCharm
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from config import TranslateLoginForm
 from app.model import User
+
 
 # 登录界面
 class LoginForm(FlaskForm):
@@ -14,6 +15,7 @@ class LoginForm(FlaskForm):
     password = PasswordField(TranslateLoginForm.Password, validators=[DataRequired()])
     remember_me = BooleanField(TranslateLoginForm.RememberMe)
     submit = SubmitField(TranslateLoginForm.submit)
+
 
 # 注册新用户
 class RegistrationForm(FlaskForm):
@@ -33,3 +35,10 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+
+# 编辑个人信息
+class EditProfileForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    about_me = TextAreaField('About me', validators=[Length(min=0, max=65534)])
+    submit = SubmitField('Submit')

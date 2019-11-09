@@ -14,4 +14,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 
+# 要求用户登录
+login.login_view = 'login'
+
 from app import route, model

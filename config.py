@@ -9,7 +9,7 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-hao-guess'
     DIALECT = 'mysql'
     DRIVER = 'pymysql'
-    USERNAME = 'root'
+    USERNAME = 'hao'
     PASSWORD = 'hhaixdw'
     HOST = 'localhost'
     PORT = '3306'
