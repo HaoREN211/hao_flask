@@ -6,6 +6,20 @@ from app import db
 from datetime import datetime
 from hashlib import md5
 from werkzeug.security import generate_password_hash, check_password_hash
+from app.models.Post import Post
+
+
+followers = db.Table('user_followers',
+    db.Column('follower_id',
+              db.Integer,
+              db.ForeignKey('user.id'),
+              comment='关注者ID'),
+    db.Column('followed_id',
+              db.Integer,
+              db.ForeignKey('user.id'),
+              comment='被关注者ID'),
+    comment='粉丝'
+)
 
 
 class User(UserMixin, db.Model):
@@ -16,7 +30,13 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text, comment='关于我的个人简介')
     last_seen = db.Column(db.DateTime, default=datetime.utcnow, comment='用户最后一次登录时间')
     password_hash = db.Column(db.String(128), comment='用户密码')
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    posts = db.relationship('Post', backref='author', lazy='dynamic'),
+
+    followed = db.relationship(
+        'User', secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -31,3 +51,23 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
+
+    # 返回当前用户关注对象的最新动态
+    def followed_posts(self):
+        followed = Post.query.join(
+            followers, (followers.c.followed_id == Post.user_id)).filter(
+            followers.c.follower_id == self.id)
+        own = Post.query.filter_by(user_id=self.id)
+        return followed.union(own).order_by(Post.timestamp.desc())

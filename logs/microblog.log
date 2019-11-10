@@ -1,0 +1,212 @@
+2019-11-10 21:27:47,353 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 21:27:59,440 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 21:47:39,464 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 21:48:22,114 ERROR: Exception on /user/test [GET] [in c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\routes\user.py", line 21, in user
+    return render_template('user.html', user=user, posts=posts)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\templating.py", line 138, in render_template
+    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 869, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 830, in get_template
+    return self._load_template(name, self.make_globals(globals))
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 804, in _load_template
+    template = self.loader.load(self, name, globals)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\loaders.py", line 125, in load
+    code = environment.compile(source, name, filename)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 591, in compile
+    self.handle_exception(exc_info, source_hint=source_hint)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\user.html", line 34, in template
+    {% else %}
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 497, in _parse
+    return Parser(self, source, name, encode_filename(filename)).parse()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\parser.py", line 901, in parse
+    result = nodes.Template(self.subparse(), lineno=1)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\parser.py", line 883, in subparse
+    rv = self.parse_statement()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\parser.py", line 130, in parse_statement
+    return getattr(self, 'parse_' + self.stream.current.value)()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\parser.py", line 268, in parse_block
+    node.body = self.parse_statements(('name:endblock',), drop_needle=True)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\parser.py", line 165, in parse_statements
+    result = self.subparse(end_tokens)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\parser.py", line 883, in subparse
+    rv = self.parse_statement()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\parser.py", line 144, in parse_statement
+    self.fail_unknown_tag(token.value, token.lineno)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\parser.py", line 97, in fail_unknown_tag
+    return self._fail_ut_eof(name, self._end_token_stack, lineno)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\parser.py", line 90, in _fail_ut_eof
+    self.fail(' '.join(message), lineno)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\parser.py", line 59, in fail
+    raise exc(msg, lineno, self.name, self.filename)
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'else'. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2019-11-10 21:49:08,485 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 21:51:06,683 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 22:04:18,984 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 22:04:24,100 ERROR: Exception on /user/hao [GET] [in c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\routes\user.py", line 18, in user
+    return render_template('user.html', user=user, posts=posts)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\templating.py", line 140, in render_template
+    ctx.app,
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\user.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\base.html", line 45, in top-level template code
+    {% block content %}{% endblock %}
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\user.html", line 54, in block "content"
+    {% include '_post.html' %}
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\_post.html", line 3, in top-level template code
+    <td><img src="{{ post.author.avatar(36) }}"></td>
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 430, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'sqlalchemy.orm.relationships.RelationshipProperty object' has no attribute 'author'
+2019-11-10 22:09:00,389 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 22:09:37,049 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 22:09:39,991 ERROR: Exception on /user/hao [GET] [in c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\routes\user.py", line 18, in user
+    return render_template('user.html', user=user, posts=posts)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\templating.py", line 140, in render_template
+    ctx.app,
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\user.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\base.html", line 45, in top-level template code
+    {% block content %}{% endblock %}
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\user.html", line 54, in block "content"
+    {% include '_post.html' %}
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\_post.html", line 3, in top-level template code
+    <td><img src="{{ post.author.avatar(36) }}"></td>
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 430, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'sqlalchemy.orm.relationships.RelationshipProperty object' has no attribute 'author'
+2019-11-10 22:12:21,082 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 22:13:59,178 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 22:14:01,291 ERROR: Exception on /user/hao [GET] [in c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\routes\user.py", line 21, in user
+    posts = user.posts()
+TypeError: 'tuple' object is not callable
+2019-11-10 22:14:07,867 INFO: Microblog startup [in C:\Users\Hao\PycharmProjects\hao_flask\app\__init__.py:35]
+2019-11-10 22:14:09,748 ERROR: Exception on /user/hao [GET] [in c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py:1891]
+Traceback (most recent call last):
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 2446, in wsgi_app
+    response = self.full_dispatch_request()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1951, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1820, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1949, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\app.py", line 1935, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
+    return func(*args, **kwargs)
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\routes\user.py", line 22, in user
+    return render_template('user.html', user=user, posts=posts)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\templating.py", line 140, in render_template
+    ctx.app,
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\flask\templating.py", line 120, in _render
+    rv = template.render(context)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\user.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\base.html", line 45, in top-level template code
+    {% block content %}{% endblock %}
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\user.html", line 54, in block "content"
+    {% include '_post.html' %}
+  File "C:\Users\Hao\PycharmProjects\hao_flask\app\templates\_post.html", line 3, in top-level template code
+    <td><img src="{{ post.author.avatar(36) }}"></td>
+  File "c:\users\hao\appdata\local\programs\python\python36\lib\site-packages\jinja2\environment.py", line 430, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'sqlalchemy.orm.relationships.RelationshipProperty object' has no attribute 'author'

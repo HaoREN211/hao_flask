@@ -8,10 +8,28 @@
         <div>
             <a href="{{ url_for('index') }}">{{ home }}</a>
             {% if current_user.is_anonymous %}
-                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('login') }}">
+                    {% if Login %}
+                        {{ Login }}
+                    {% else %}
+                        登录
+                    {% endif %}
+                </a>
             {% else %}
-                <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-                <a href="{{ url_for('logout') }}">Logout</a>
+                <a href="{{ url_for('user', username=current_user.username) }}">
+                    {% if Profile %}
+                        {{ Profile }}
+                    {% else %}
+                        用户资料
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('logout') }}">
+                    {% if Logout %}
+                        {{ Logout }}
+                    {% else %}
+                        登出
+                    {% endif %}
+                </a>
             {% endif %}
         </div>
         <hr>

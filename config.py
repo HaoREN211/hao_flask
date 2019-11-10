@@ -34,3 +34,10 @@ class TranslateLoginForm(object):
 class TranslatePage(object):
     Home = "主页"
     Login = "登录"
+
+
+class ChineseLanguage:
+    class Profile:
+        edit_profile = "修改资料"
+        saved = "资料修改成功"
+        profile = "用户资料"

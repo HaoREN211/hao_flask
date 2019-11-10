@@ -21,7 +21,20 @@
             </p>
             <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
             <p>{{ form.submit() }}</p>
-            <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
+            <p>
+                {% if NewUser %}
+                        {{ NewUser }}
+                {% else %}
+                    新用户?
+                {% endif %}
+                <a href="{{ url_for('register') }}">
+                    {% if ClickRegister %}
+                        {{ ClickRegister }}
+                    {% else %}
+                        点击注册
+                    {% endif %}
+                </a>
+            </p>
         </form>
     </div>
 {% endblock %}
