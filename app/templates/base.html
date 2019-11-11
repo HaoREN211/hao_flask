@@ -1,47 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>{{ title }}</title>
-    </head>
-    <body>
-        <div>
-            <a href="{{ url_for('index') }}">{{ home }}</a>
-            {% if current_user.is_anonymous %}
-                <a href="{{ url_for('login') }}">
-                    {% if Login %}
-                        {{ Login }}
-                    {% else %}
-                        登录
-                    {% endif %}
-                </a>
-            {% else %}
-                <a href="{{ url_for('user', username=current_user.username) }}">
-                    {% if Profile %}
-                        {{ Profile }}
-                    {% else %}
-                        用户资料
-                    {% endif %}
-                </a>
-                <a href="{{ url_for('logout') }}">
-                    {% if Logout %}
-                        {{ Logout }}
-                    {% else %}
-                        登出
-                    {% endif %}
-                </a>
-            {% endif %}
-        </div>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+{% extends 'bootstrap/base.html' %}
+
+
+    {% block title %}
+        {% if title %}
+            {{ title }}
+        {% else %}
+            任皓的博客
         {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </body>
-</html>
+    {% endblock %}
+
+    {% block scripts %}
+        {# 它已经在基础模板中定义了一些内容 #}
+        {# 想要追加moment.js库的话，
+        就需要使用super()语句，才能继承基础模板中已有的内容，
+        否则就是替换。 #}
+        {{ super() }}
+        {{ moment.include_moment() }}
+        {# 使用中文,默认是英语的 #}
+        {{ moment.lang("zh-CN") }}　
+    {% endblock %}
+
+    {% block navbar %}
+        <div class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle"
+                    data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ url_for('main.index') }}">主页</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        {% if current_user.is_anonymous %}
+                            <li>
+                                <a href="{{ url_for('auth.login') }}">登录</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ url_for('main.user', username=current_user.username) }}">用户资料</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('main.explore') }}">发现</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('main.add_post') }}">写帖子</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('auth.logout') }}">登出</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+
+    {% block content %}
+
+        <div class="container">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-info" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            {# application content needs to be provided in the app_content block #}
+            {% block app_content %}{% endblock %}
+        </div>
+
+    {% endblock %}

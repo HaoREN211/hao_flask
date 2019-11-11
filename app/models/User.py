@@ -3,10 +3,10 @@
 # IDE：PyCharm
 from flask_login import UserMixin
 from app import db
-from datetime import datetime
 from hashlib import md5
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.Post import Post
+from datetime import datetime
 
 
 followers = db.Table('user_followers',
@@ -18,6 +18,10 @@ followers = db.Table('user_followers',
               db.Integer,
               db.ForeignKey('user.id'),
               comment='被关注者ID'),
+    db.Column('follow_time',
+              db.TIMESTAMP,
+              comment='关注时间',
+              default=datetime.utcnow()),
     comment='粉丝'
 )
 
@@ -30,7 +34,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text, comment='关于我的个人简介')
     last_seen = db.Column(db.DateTime, default=datetime.utcnow, comment='用户最后一次登录时间')
     password_hash = db.Column(db.String(128), comment='用户密码')
-    posts = db.relationship('Post', backref='author', lazy='dynamic'),
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     followed = db.relationship(
         'User', secondary=followers,

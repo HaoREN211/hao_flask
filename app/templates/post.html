@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
+    <link href="{{ url_for('static', filename='editormd/css/editormd.preview.min.css') }}" rel="stylesheet" />
+    <div class="content" id="fancy-content">
+            {{ post.body | md | safe }}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='editormd/lib/marked.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='editormd/lib/prettify.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='editormd/editormd.min.js') }}"></script>
+{% endblock %}
