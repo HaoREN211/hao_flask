@@ -1,6 +1,7 @@
 # hao_flask
 
 pip freeze > requirements.txt
+pipreqs ./  --encoding=utf8 --force
 
 1. [第一章：Hello, World!](https://github.com/luhuisicnu/The-Flask-Mega-Tutorial-zh/blob/master/docs/%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9AHello%2C%20World!.md)
 2. [第二章：模板](https://github.com/luhuisicnu/The-Flask-Mega-Tutorial-zh/blob/master/docs/%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E6%A8%A1%E6%9D%BF.md)
