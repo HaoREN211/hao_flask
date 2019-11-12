@@ -12,8 +12,7 @@ class PostForm(FlaskForm):
 
     post = TextAreaField('帖子内容', validators=[
         DataRequired(), Length(min=1, max=16777215)])
-    post_html = TextAreaField('帖子内容', validators=[
-        DataRequired(), Length(min=1, max=16777215)])
+    post_html = TextAreaField('帖子HTML内容')
     title = StringField('帖子标题', validators=[
         DataRequired(), Length(min=1, max=200)])
     submit = SubmitField('确认修改')

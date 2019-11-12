@@ -9,6 +9,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, comment='帖子主键')
     title = db.Column(db.String(200), comment='帖子标题')
     body = db.Column(db.Text(16777216), comment='帖子内容')
+    body_html = db.Column(db.Text(16777216), comment='帖子HTML内容')
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow, comment='帖子创建时间')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), comment='帖子作者的用户ID')
     language = db.Column(db.String(5), comment='语言')

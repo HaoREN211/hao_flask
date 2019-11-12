@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+    <h1 class="text-center">{{ post.title }}</h1>
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
     <link href="{{ url_for('static', filename='editormd/css/editormd.preview.min.css') }}" rel="stylesheet" />
     <div class="content" id="fancy-content">
-            {{ post.body | md | safe }}
+            {{ post.body_html | md | safe }}
     </div>
 {% endblock %}
 

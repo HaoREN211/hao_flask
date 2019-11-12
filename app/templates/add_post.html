@@ -5,7 +5,7 @@
     <div class="row">
         <h1 class="text-center">新帖子</h1>
 
-        <form method="post">
+        <form method="post" id="form">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{ form.title.label }}
@@ -28,10 +28,11 @@
                     {{ form.post(style="display:none;") }}
                 </div>
             </div>
-            <input class="btn btn-primary" type="submit" value="提交">
-            <div>
+{#            <input class="btn btn-primary" type="submit" value="提交">#}
+            <div style="display:none">
                 {{ form.post_html }}
             </div>
+            <button class="btn btn-primary" type="button" onclick="test()">提交</button>
         </form>
     </div>
 {% endblock %}
@@ -53,27 +54,14 @@
             });
         });
     </script>
+
     <script type="application/javascript">
         function test() {
-            alert("test")
+            var markdown_list = document.getElementsByClassName("markdown-body");
+            var markdown_object = markdown_list[0];
+            document.getElementById('post_html').value = markdown_object.innerHTML;
+            document.getElementById("form").submit();
         }
-    </script>
-
-    <script type="application/javascript">
-{#        window.onload=function () {#}
-{#            var obj = document.getElementById("post");#}
-{##}
-{#            obj.value = "test";#}
-{#            obj.onchange = function () {#}
-{#                alert("666");#}
-{#            }#}
-{#        };#}
-{##}
-{##}
-{#    $('#post').bind('input propertychange','textarea',function(){#}
-{#        alert("hehehe")#}
-{#    });#}
-
     </script>
 
 {% endblock %}

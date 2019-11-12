@@ -6,10 +6,13 @@ import os
 
 
 class Config(object):
+    # 分页功能，每页显示的个数
+    POSTS_PER_PAGE = 10
+
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-hao-guess'
     DIALECT = 'mysql'
     DRIVER = 'pymysql'
-    USERNAME = 'hao'
+    USERNAME = 'root'
     PASSWORD = 'hhaixdw'
     HOST = 'localhost'
     PORT = '3306'

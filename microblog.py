@@ -14,17 +14,6 @@ def make_shell_context():
 @app.template_filter('md')
 def markdown_html(txt):
     from markdown import markdown
-    # return markdown(txt, extensions=[
-    #                                   'markdown.extensions.extra',
-    #     'markdown.extensions.abbr', 'markdown.extensions.attr_list',
-    #     'markdown.extensions.def_list', 'markdown.extensions.tables',
-    #     'markdown.extensions.fenced_code', 'markdown.extensions.footnotes',
-    #     'markdown.extensions.smart_strong', 'markdown.extensions.admonition',
-    #     'markdown.extensions.codehilite', 'markdown.extensions.headerid',
-    #     'markdown.extensions.meta', 'markdown.extensions.nl2br',
-    #     'markdown.extensions.sane_lists', 'markdown.extensions.smarty',
-    #     'markdown.extensions.toc', 'markdown.extensions.wikilinks'
-    #                               ])
     return markdown(txt, extensions=[
         'markdown.extensions.extra',
         'markdown.extensions.admonition',
@@ -36,3 +25,6 @@ def markdown_html(txt):
         'markdown.extensions.toc',
         'markdown.extensions.wikilinks'
     ])
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000)
