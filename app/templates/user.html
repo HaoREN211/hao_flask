@@ -38,35 +38,46 @@
                 </p>
                 {% if user == current_user %}
                     <p>
-                        <a href="{{ url_for('main.edit_profile') }}">
-                        {% if EditProfile %}
-                            {{ EditProfile }}
-                        {% else %}
-                            编辑用户信息
-                        {% endif %}
-                        </a>
+
+                        <button type="button"
+                            class="btn btn-success btn-xs"
+                            onclick=window.location.href='{{ url_for("main.edit_profile") }}'>
+                            {% if EditProfile %}
+                                {{ EditProfile }}
+                            {% else %}
+                                编辑用户信息
+                            {% endif %}
+                        </button>
+
                     </p>
                 {% elif not current_user.is_following(user) %}
-                    <p><a href="{{ url_for('main.follow', username=user.username) }}">
-                        {% if Follow %}
-                            {{ Follow }}
-                        {% else %}
-                            关注
-                        {% endif %}
-                    </a></p>
+                    <p>
+                        <button type="button"
+                            class="btn btn-success btn-xs"
+                            onclick=window.location.href='{{ url_for("main.follow", username=user.username) }}'>
+                            {% if Follow %}
+                                {{ Follow }}
+                            {% else %}
+                                关注
+                            {% endif %}
+                        </button>
+                    </p>
                 {% else %}
-                    <p><a href="{{ url_for('main.unfollow', username=user.username) }}">
-                        {% if Unfollow %}
-                            {{ Unfollow }}
-                        {% else %}
-                            取消关注
-                        {% endif %}
-                    </a></p>
+                    <p>
+                        <button type="button"
+                            class="btn btn-danger btn-xs"
+                            onclick=window.location.href='{{ url_for("main.unfollow", username=user.username) }}'>
+                            {% if Unfollow %}
+                                {{ Unfollow }}
+                            {% else %}
+                                取消关注
+                            {% endif %}
+                        </button>
+                    </p>
                 {% endif %}
             </td>
         </tr>
     </table>
-    <hr>
     {% for post in posts %}
         {% include '_post.html' %}
     {% endfor %}

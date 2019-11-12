@@ -5,19 +5,31 @@
     <div>
         <h1>{{ login_title }}</h1>
 
+        <button type="button"
+                class="btn btn-success btn-xs"
+                onclick=window.location.href='{{ url_for("auth.register") }}'>注册</button>
+        <button type="button"
+                class="btn btn-danger btn-xs"
+                onclick="close_window()">退出</button>
+
+        <hr>
+
         <div class="row">
             <div class="col-md-4">
                 {{ wtf.quick_form(form) }}
             </div>
         </div>
 
-        <a href="{{ url_for('auth.register') }}">
-                {% if ClickRegister %}
-                    {{ ClickRegister }}
-                {% else %}
-                    点击注册
-                {% endif %}
-            </a>
-
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="application/javascript">
+        function close_window() {
+            window.opener=null;
+            window.open('','_self');
+            window.close();
+        }
+    </script>
 {% endblock %}

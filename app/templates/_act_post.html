@@ -1,0 +1,7 @@
+{% if not current_user.is_liking(post) %}
+    <input class="btn btn-success btn-xs" type="button" value="点赞"
+       onclick=window.location.href='{{ url_for("act.like", post_id=post.id) }}'>
+{% else %}
+    <input class="btn btn-success btn-xs" type="button" value="取消点赞"
+       onclick=window.location.href='{{ url_for("act.cancel_like", post_id=post.id) }}'>
+{% endif %}

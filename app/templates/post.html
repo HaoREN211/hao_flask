@@ -1,9 +1,25 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    {% if current_user==post.author %}
-        {% include '_edit_post.html' %}
-    {% endif %}
+    <div>
+        <div style="display: inline;">
+            {% if current_user.is_anonymous %}
+
+            {% elif current_user!=post.author %}
+                {% include '_act_post.html' %}
+            {% elif current_user==post.author %}
+                {% include '_act_post.html' %}
+                {% include '_edit_post.html' %}
+            {% endif %}
+        </div>
+        <div style="display: inline;float: right;">
+            <button class="btn btn-info btn-xs" type="button">
+                已点赞：{{ post.nb_liked_person() }}人
+            </button>
+        </div>
+    </div>
+
+
     <hr>
     <h1 class="text-center">{{ post.title }}</h1>
     <hr>

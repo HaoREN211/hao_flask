@@ -2,10 +2,18 @@
 # 时间：2019/11/5 14:34
 # IDE：PyCharm
 
+from flask import send_from_directory
 from app import create_app, db
 from app.model import User, Post
+from os.path import join
 
 app = create_app()
+
+# 为网站添加图标
+def favicon():
+    return send_from_directory(join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+app.add_url_rule('/favicon.ico',view_func=favicon)
 
 @app.shell_context_processor
 def make_shell_context():

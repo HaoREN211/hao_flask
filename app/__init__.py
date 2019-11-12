@@ -36,7 +36,6 @@ def create_app(config_class=Config):
     bootstrap.init_app(app)
     moment.init_app(app)
     babel.init_app(app)
-    # markdown(app)
 
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp, url_prefix='/errors')
@@ -46,6 +45,9 @@ def create_app(config_class=Config):
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
+
+    from app.act import bp as act_bp
+    app.register_blueprint(act_bp, url_prefix='/act')
 
     if not app.debug:
         if not os.path.exists('logs'):

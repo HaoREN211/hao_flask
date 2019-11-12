@@ -6,10 +6,8 @@ from flask import render_template
 from app.main import bp
 from flask_login import login_required
 from app.model import Post
-import markdown
 
 @bp.route('/post/<id>')
-@login_required
 def post(id):
     post = Post.query.filter_by(id=id).first_or_404()
 

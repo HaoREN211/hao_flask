@@ -7,6 +7,7 @@ from hashlib import md5
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.Post import Post
 from datetime import datetime
+from app.models.User_action import user_likes
 
 
 followers = db.Table('user_followers',
@@ -42,6 +43,8 @@ class User(UserMixin, db.Model):
         secondaryjoin=(followers.c.followed_id == id),
         backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
+    liked_post = db.relationship('Post', secondary = user_likes, lazy='dynamic')
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -75,3 +78,16 @@ class User(UserMixin, db.Model):
             followers.c.follower_id == self.id)
         own = Post.query.filter_by(user_id=self.id)
         return followed.union(own).order_by(Post.timestamp.desc())
+
+    def is_liking(self, post):
+        return self.liked_post.filter(
+            user_likes.c.post_id==post.id
+        ).count()>0
+
+    def like(self, post):
+        if not self.is_liking(post):
+            self.liked_post.append(post)
+
+    def cancel_like(self, post):
+        if self.is_liking(post):
+            self.liked_post.remove(post)
