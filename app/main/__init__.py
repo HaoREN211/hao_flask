@@ -6,4 +6,4 @@ from flask import Blueprint
 
 bp = Blueprint('main', __name__)
 
-from app.main.routes import explore, index, user, edit_profile, follow, unfollow, add_post, post
+from app.main.routes import explore, index, user, edit_profile, follow, unfollow, add_post, post, delete_post, edit_post

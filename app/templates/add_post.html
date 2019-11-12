@@ -5,8 +5,11 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.preview.css') }}"/>
 
     <div class="row">
-        <h1 class="text-center">新帖子</h1>
-
+        {% if is_edit %}
+            <h1 class="text-center">编辑帖子</h1>
+        {% else %}
+            <h1 class="text-center">新帖子</h1>
+        {% endif %}
         <form method="post" id="form">
             {{ form.hidden_tag() }}
             <div class="form-group">

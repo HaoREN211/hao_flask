@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+    {% if current_user==post.author %}
+        {% include '_edit_post.html' %}
+    {% endif %}
+    <hr>
     <h1 class="text-center">{{ post.title }}</h1>
+    <hr>
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.preview.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static',filename='katex/katex.css') }}" />
-
-    <div class="content" id="fancy-content">
-            {{ post.body | md | safe }}
-    </div>
-
     <style type="text/css">
         table {
             font-family: verdana,arial,sans-serif;
@@ -41,6 +41,16 @@
 			background: rgba(255, 255, 255, 1)
 		}
     </style>
+
+    <div class="content" id="fancy-content">
+            {{ post.body | md | safe }}
+    </div>
+    <br />
+    <br />
+   <hr>
+ {% if current_user==post.author %}
+        {% include '_edit_post.html' %}
+    {% endif %}
 
 {% endblock %}
 

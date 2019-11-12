@@ -5,7 +5,7 @@
 from app.main import bp
 from app import db
 from flask import render_template, flash, redirect, url_for, request
-from app.main.forms.edit_post import PostForm
+from app.main.forms.add_post import PostForm
 from app.models.Post import  Post
 from flask_login import login_required, current_user
 from setting import title

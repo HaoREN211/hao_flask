@@ -2,7 +2,7 @@
 # 时间：2019/11/11 16:48
 # IDE：PyCharm
 
-from app.main.forms.edit_post import PostForm
+from app.main.forms.add_post import PostForm
 from flask_login import login_required, current_user
 from app.main import bp
 from app import db

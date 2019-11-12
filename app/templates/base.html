@@ -18,6 +18,24 @@
         {{ moment.include_moment() }}
         {# 使用中文,默认是英语的 #}
         {{ moment.lang("zh-CN") }}　
+
+        <script type="application/javascript" >
+            function delete_post(post_id) {
+                if(confirm("您确认要删除这篇帖子吗？")){
+                    $.post('/delete_post', {
+                        post_id: post_id
+                    }).done(function(response) {
+                        window.location.href = "/index";
+                    }).fail(function(response) {
+                        alert("删除失败");
+                    });
+                }
+            }
+            function edit_post(post_id) {
+                window.location.href = "/edit_post/"+post_id;
+            }
+        </script>
+
     {% endblock %}
 
     {% block navbar %}
