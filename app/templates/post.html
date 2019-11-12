@@ -9,6 +9,39 @@
     <div class="content" id="fancy-content">
             {{ post.body | md | safe }}
     </div>
+
+    <style type="text/css">
+        table {
+            font-family: verdana,arial,sans-serif;
+            font-size:11px;
+            color:#333333;
+            border-width: 1px;
+            border-color: rgba(102, 102, 102, 1);
+            border-collapse: collapse;
+        }
+        table th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: rgba(102, 102, 102, 1);
+            background-color: #dedede;
+        }
+        table td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: rgba(255, 255, 255, 0);
+        }
+
+		table tr:nth-child(even) {
+			background: rgba(102, 102, 102, 0.1)
+		}
+		table tr:nth-child(odd) {
+			background: rgba(255, 255, 255, 1)
+		}
+    </style>
+
 {% endblock %}
 
 {% block scripts %}
@@ -21,7 +54,5 @@
     <script src="{{ url_for('static', filename='katex/katex.js') }}"></script>
     <script src="{{ url_for('static', filename='katex/katex.min.js') }}"></script>
 
-{#    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"#}
-{#        onload="renderMathInElement(document.body);"></script>#}
     <script src="{{ url_for('static', filename='katex/contrib/auto-render.min.js') }}"  onload="renderMathInElement(document.body);"></script>
 {% endblock %}
