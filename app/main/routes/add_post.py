@@ -18,7 +18,6 @@ def add_post():
     if form.validate_on_submit():
         language = guess_language(form.post.data)
         post = Post(body=form.post.data,
-                    body_html=form.post_html.data,
                     author=current_user,
                     language=language,
                     title=form.title.data)

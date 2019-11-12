@@ -3,16 +3,25 @@
 {% block app_content %}
     <h1 class="text-center">{{ post.title }}</h1>
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
-    <link href="{{ url_for('static', filename='editormd/css/editormd.preview.min.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.preview.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static',filename='katex/katex.css') }}" />
+
     <div class="content" id="fancy-content">
-            {{ post.body_html | md | safe }}
+            {{ post.body | md | safe }}
     </div>
 {% endblock %}
 
 {% block scripts %}
     {{ super() }}
-    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='editormd/lib/marked.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='editormd/lib/prettify.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='editormd/editormd.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='editormd/lib/marked.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='editormd/lib/prettify.min.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='katex/katex.js') }}"></script>
+    <script src="{{ url_for('static', filename='katex/katex.min.js') }}"></script>
+
+{#    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"#}
+{#        onload="renderMathInElement(document.body);"></script>#}
+    <script src="{{ url_for('static', filename='katex/contrib/auto-render.min.js') }}"  onload="renderMathInElement(document.body);"></script>
 {% endblock %}

@@ -3187,7 +3187,7 @@
             var cm        = this.cm;
             var cursor    = cm.getCursor();
             var selection = cm.getSelection();
-            
+
             if (!this.settings.emoji)
             {
                 alert("Error: settings.emoji == false");
@@ -3268,7 +3268,7 @@
             var cm        = this.cm;
             var cursor    = cm.getCursor();
             var selection = cm.getSelection();
-            
+
             var title = (selection === "") ? "" : " \""+selection+"\"";
 
             cm.replaceSelection("![" + selection + "]("+title+")");

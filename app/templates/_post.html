@@ -11,7 +11,9 @@
             </a>
             ({{ moment(post.timestamp).fromNow() }}):
             <br>
-            {{ post.title }}
+            <a href="{{ url_for('main.post', id=post.id) }}">
+                {{ post.title }}
+            </a>
         </td>
     </tr>
 </table>

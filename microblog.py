@@ -23,7 +23,8 @@ def markdown_html(txt):
         'markdown.extensions.sane_lists',
         'markdown.extensions.smarty',
         'markdown.extensions.toc',
-        'markdown.extensions.wikilinks'
+        'markdown.extensions.wikilinks',
+        'markdown.extensions.tables'
     ])
 
 if __name__ == '__main__':

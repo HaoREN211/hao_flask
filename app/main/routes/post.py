@@ -12,12 +12,6 @@ import markdown
 @login_required
 def post(id):
     post = Post.query.filter_by(id=id).first_or_404()
-    post.body = markdown.markdown(post.body,
-                                  extensions=[
-                                      'markdown.extensions.extra',
-                                      'markdown.extensions.codehilite',
-                                      'markdown.extensions.toc',
-                                  ])
 
     # 分页
     return render_template('post.html', user=post.author, post=post)
