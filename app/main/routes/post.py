@@ -5,25 +5,11 @@
 from flask import render_template
 from app.main import bp
 from app.model import Post
-from markdown import markdown
 
 
 @bp.route('/post/<id>')
 def post(id):
     inside_post = Post.query.filter_by(id=id).first_or_404()
-    inside_post.body = markdown(inside_post.body, extensions=[
-        'markdown.extensions.extra',
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.admonition',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.meta',
-        'markdown.extensions.nl2br',
-        'markdown.extensions.sane_lists',
-        'markdown.extensions.smarty',
-        'markdown.extensions.toc',
-        'markdown.extensions.wikilinks',
-        'markdown.extensions.tables'
-    ])
     # 分页
     return render_template('post.html', user=inside_post.author, post=inside_post)
 

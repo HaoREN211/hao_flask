@@ -4,7 +4,7 @@
 
 from app.main import bp
 from flask_login import login_required, current_user
-from flask import flash, redirect, url_for, render_template
+from flask import flash, redirect, url_for, render_template, request
 from guess_language import guess_language
 from app.models.Post import Post
 from app.main.forms.add_post import PostForm
@@ -30,17 +30,15 @@ def edit_post(post_id):
 
     # 先将post表单里的数据保存在临时变量里
     # 不然提交了表单之后，会将数据库原来的数据重新赋值给已经编辑过的数据
-    temp_post_data = form.post.data
-    temp_post_title = form.title.data
-    form.post.data = current_post.body
-    form.title.data = current_post.title
-
     if form.validate_on_submit():
-        current_post.language = guess_language(temp_post_data)
-        current_post.body = temp_post_data
-        current_post.title = temp_post_title
+        current_post.language = guess_language(form.post.data)
+        current_post.body = form.post.data
+        current_post.title = form.title.data
         db.session.commit()
         flash("帖子修改成功")
         return redirect(url_for("main.post", id=str(post_id)))
+    elif request.method == 'GET':
+        form.post.data = current_post.body
+        form.title.data = current_post.title
 
     return render_template("add_post.html", form=form, is_edit=True)
