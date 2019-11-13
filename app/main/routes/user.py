@@ -4,7 +4,7 @@
 
 from flask import render_template, request, url_for, g
 from app.main import bp
-from flask_login import login_required
+from flask_login import login_required, current_user
 from app.models.Post import Post
 from app.model import User
 from config import Config
@@ -13,6 +13,12 @@ from config import Config
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
+
+    # 添加用户浏览事件
+    if not user == current_user:
+        if not current_user.is_anonymous:
+            current_user.view_user(user)
+
     # 分页
     page = request.args.get('page', 1, type=int)
     posts = user.posts.order_by(Post.timestamp.desc()).paginate(

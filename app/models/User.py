@@ -4,10 +4,11 @@
 from flask_login import UserMixin
 from app import db
 from hashlib import md5
+from operator import and_
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.Post import Post
-from datetime import datetime
-from app.models.User_action import user_likes
+from datetime import datetime, timedelta
+from app.models.User_action import user_likes, user_views_user
 
 
 followers = db.Table('user_followers',
@@ -35,6 +36,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text, comment='关于我的个人简介')
     last_seen = db.Column(db.DateTime, default=datetime.utcnow, comment='用户最后一次登录时间')
     password_hash = db.Column(db.String(128), comment='用户密码')
+
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     followed = db.relationship(
@@ -42,6 +44,12 @@ class User(UserMixin, db.Model):
         primaryjoin=(followers.c.follower_id == id),
         secondaryjoin=(followers.c.followed_id == id),
         backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+
+    viewed = db.relationship(
+        'User', secondary=user_views_user,
+        primaryjoin=(user_views_user.c.viewer_id == id),
+        secondaryjoin=(user_views_user.c.viewed_id == id),
+        backref=db.backref('viewers', lazy='dynamic'), lazy='dynamic')
 
     liked_post = db.relationship('Post', secondary = user_likes, lazy='dynamic')
 
@@ -66,6 +74,30 @@ class User(UserMixin, db.Model):
     def unfollow(self, user):
         if self.is_following(user):
             self.followed.remove(user)
+
+    # 检测该用户十分钟前是否浏览过该用户的主页。
+    def check_if_viewed_viewer(self, user):
+        compared_time = datetime.utcnow() - timedelta(minutes=10)
+        return self.viewed.filter(
+            and_(user_views_user.c.viewed_id == user.id,
+                 user_views_user.c.view_time >= compared_time)
+        ).count() > 0
+
+
+    # 用户浏览其他用户主页，数据添加浏览数据
+    def view_user(self, user):
+        if not self.check_if_viewed_viewer(user):
+            self.viewed.append(user)
+
+
+    # 用户主页被浏览次数
+    def page_viewed_count(self):
+        return self.viewers.count()
+
+    # 用户浏览其他用户主页次数
+    def view_user_count(self):
+        return self.viewed.count()
+
 
     def is_following(self, user):
         return self.followed.filter(
