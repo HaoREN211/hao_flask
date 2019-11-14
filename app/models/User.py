@@ -8,7 +8,7 @@ from operator import and_
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.Post import Post
 from datetime import datetime, timedelta
-from app.models.User_action import user_likes, user_views_user
+from app.models.User_action import user_likes, user_views_user, user_views_post
 
 
 followers = db.Table('user_followers',
@@ -52,6 +52,7 @@ class User(UserMixin, db.Model):
         backref=db.backref('viewers', lazy='dynamic'), lazy='dynamic')
 
     liked_post = db.relationship('Post', secondary = user_likes, lazy='dynamic')
+    viewed_post = db.relationship('Post', secondary=user_views_post, lazy='dynamic')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -82,6 +83,21 @@ class User(UserMixin, db.Model):
             and_(user_views_user.c.viewed_id == user.id,
                  user_views_user.c.view_time >= compared_time)
         ).count() > 0
+
+
+    # 检测该用户一小时前是否浏览过该用户的主页。
+    def check_if_viewed_post(self, post):
+        compared_time = datetime.utcnow() - timedelta(hours=1)
+        return self.viewed_post.filter(
+            and_(user_views_post.c.viewed_id == post.id,
+                 user_views_post.c.view_time >= compared_time
+                 )).count() > 0
+
+
+    # 用户浏览帖子
+    def view_post(self, post):
+        if not self.check_if_viewed_post(post):
+            self.viewed_post.append(post)
 
 
     # 用户浏览其他用户主页，数据添加浏览数据

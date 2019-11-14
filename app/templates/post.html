@@ -14,6 +14,9 @@
         </div>
         <div style="display: inline;float: right;">
             <button class="btn btn-info btn-xs" type="button">
+                已浏览：{{ post.nb_viewed_person() }}次
+            </button>
+            <button class="btn btn-info btn-xs" type="button">
                 已点赞：{{ post.nb_liked_person() }}人
             </button>
         </div>

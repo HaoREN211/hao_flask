@@ -3,7 +3,7 @@
 # IDE：PyCharm
 from datetime import datetime
 from app import db
-from app.models.User_action import user_likes
+from app.models.User_action import user_likes, user_views_post
 
 
 class Post(db.Model):
@@ -15,9 +15,15 @@ class Post(db.Model):
     language = db.Column(db.String(5), comment='语言')
 
     liked_user = db.relationship('User', secondary=user_likes)
+    viewed_user = db.relationship('User', secondary=user_views_post)
 
+    # 多少人赞了这条帖子
     def nb_liked_person(self):
         return len(self.liked_user)
+
+    # 多少人浏览了这条帖子
+    def nb_viewed_person(self):
+        return len(self.viewed_user)
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
