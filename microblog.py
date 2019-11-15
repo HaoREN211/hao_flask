@@ -5,7 +5,7 @@
 from flask import send_from_directory
 from app import create_app, db
 from app.model import User, Post
-from os.path import join
+from os.path import join, exists
 
 app = create_app()
 
