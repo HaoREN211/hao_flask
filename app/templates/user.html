@@ -20,22 +20,23 @@
                         最后一次登录时间：
                     {{ moment(user.last_seen).format('LLL') }}
                     </p>{% endif %}
+                <p>主页被浏览：<code>{{ user.page_viewed_count() }}</code>次。</p>
+                <p>帖子被浏览：<code>{{ user.sum_post_viewed() }}</code>次。</p>
+                <p>浏览他人主页：<code>{{ user.view_user_count() }}</code>次。</p>
+                <p>浏览他人帖子：<code>{{ user.sum_views_post() }}</code>次。</p>
                 <p>
-                    主页被浏览：<code>{{ user.page_viewed_count() }}</code>次。</p>
-                <p>    浏览他人主页：<code>{{ user.view_user_count() }}</code>次。
+                    获赞：<code>{{ user.sum_post_liked() }}</code>次；
+                    点赞：<code>{{ user.liked_post.count() }}</code>次。
                 </p>
-                <p><code>{{ user.followers.count() }}</code>
+                <p>
                     {% if Follower %}
                         {{ Follower }}
                     {% else %}
-                        粉丝数量。
-                    {% endif %}
-                    <code>{{ user.followed.count() }}</code>
+                        粉丝：{% endif %}<code>{{ user.followers.count() }}</code>人；
                     {% if Followering %}
                         {{ Followering }}
                     {% else %}
-                        关注的人。
-                    {% endif %}
+                        关注：{% endif %}<code>{{ user.followed.count() }}</code>人。
                 </p>
                 {% if user == current_user %}
                     <p>

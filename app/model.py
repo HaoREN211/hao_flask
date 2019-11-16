@@ -6,6 +6,7 @@
 from app import login
 from app.models.User import User
 from app.models.Post import Post
+from app.models.Tag import Tag
 
 @login.user_loader
 def load_user(id):

@@ -3,14 +3,16 @@
 # IDE：PyCharm
 from datetime import datetime
 from app import db
+from sqlalchemy.dialects.mysql import BIGINT
+
 
 user_likes = db.Table('user_likes',
     db.Column('user_id',
-        db.Integer,
+        BIGINT(unsigned=True),
         db.ForeignKey('user.id'),
         comment='点赞者ID'),
     db.Column('post_id',
-        db.Integer,
+        BIGINT(unsigned=True),
         db.ForeignKey('post.id'),
         comment='被点赞帖子'),
     db.Column('likes_time',
@@ -22,11 +24,11 @@ user_likes = db.Table('user_likes',
 
 user_views_user = db.Table('user_views_user',
     db.Column('viewer_id',
-        db.Integer,
+        BIGINT(unsigned=True),
         db.ForeignKey('user.id'),
         comment='浏览者ID'),
     db.Column('viewed_id',
-        db.Integer,
+        BIGINT(unsigned=True),
         db.ForeignKey('user.id'),
         comment='被浏览者ID'),
     db.Column('view_time',
@@ -39,11 +41,11 @@ user_views_user = db.Table('user_views_user',
 
 user_views_post = db.Table('user_views_post',
     db.Column('viewer_id',
-        db.Integer,
+        BIGINT(unsigned=True),
         db.ForeignKey('user.id'),
         comment='浏览者ID'),
     db.Column('viewed_id',
-        db.Integer,
+        BIGINT(unsigned=True),
         db.ForeignKey('post.id'),
         comment='被浏览帖子ID'),
     db.Column('view_time',
@@ -51,4 +53,22 @@ user_views_post = db.Table('user_views_post',
           comment='浏览时间',
           default=datetime.utcnow()),
     comment='用户浏览帖子事件'
+)
+
+
+post_tag = db.Table(
+    'post_tag',
+    db.Column('post_id',
+        BIGINT(unsigned=True),
+        db.ForeignKey('post.id'),
+        comment='帖子ID'),
+    db.Column('tag_id',
+        BIGINT(unsigned=True),
+        db.ForeignKey('tag.id'),
+        comment='标签ID'),
+    db.Column('view_time',
+          db.TIMESTAMP,
+          comment='标签添加时间',
+          default=datetime.utcnow()),
+    comment='用户添加帖子标签'
 )

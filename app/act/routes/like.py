@@ -23,3 +23,5 @@ def cancel_like(post_id):
     current_user.cancel_like(post)
     flash("取消点赞")
     return redirect(url_for("main.post", id=post_id))
+
+

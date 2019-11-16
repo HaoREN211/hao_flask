@@ -6,4 +6,4 @@ from flask import Blueprint
 
 bp = Blueprint('act', __name__)
 
-from app.act.routes import like
+from app.act.routes import like, search

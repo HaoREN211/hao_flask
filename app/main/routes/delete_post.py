@@ -21,6 +21,7 @@ def delete_post():
         return jsonify({'result': '帖子'+str(post_id)+'不存在'})
 
     current_post = Post.query.filter_by(id=int(post_id)).first()
+    current_post.remove_all_related_person()
     db.session.delete(current_post)
     db.session.commit()
     flash("帖子删除成功")

@@ -3,6 +3,7 @@
 # IDE：PyCharm
 from flask_login import UserMixin
 from app import db
+from sqlalchemy.dialects.mysql import BIGINT
 from hashlib import md5
 from operator import and_
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -13,11 +14,11 @@ from app.models.User_action import user_likes, user_views_user, user_views_post
 
 followers = db.Table('user_followers',
     db.Column('follower_id',
-              db.Integer,
+              BIGINT(unsigned=True),
               db.ForeignKey('user.id'),
               comment='关注者ID'),
     db.Column('followed_id',
-              db.Integer,
+              BIGINT(unsigned=True),
               db.ForeignKey('user.id'),
               comment='被关注者ID'),
     db.Column('follow_time',
@@ -29,7 +30,7 @@ followers = db.Table('user_followers',
 
 
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True, comment='用户主键')
+    id = db.Column(BIGINT(unsigned=True), primary_key=True, comment='用户主键')
     username = db.Column(db.String(64), index=True, unique=True, comment='用户账号名')
     profile_name = db.Column(db.String(64), index=True, comment='用户昵称')
     email = db.Column(db.String(120), index=True, unique=True, comment='用户邮箱地址')
@@ -53,6 +54,25 @@ class User(UserMixin, db.Model):
 
     liked_post = db.relationship('Post', secondary = user_likes, lazy='dynamic')
     viewed_post = db.relationship('Post', secondary=user_views_post, lazy='dynamic')
+
+
+    # 统计用户总共浏览了多少次帖子
+    def sum_views_post(self):
+        return self.viewed_post.count()
+
+    # 统计用户的帖子总共被浏览了多少次
+    def sum_post_viewed(self):
+        nb_viewed = 0
+        for post in self.posts:
+            nb_viewed += len(post.viewed_user)
+        return nb_viewed
+
+    # 统计用户的帖子总共被点赞多少次
+    def sum_post_liked(self):
+        nb_liked = 0
+        for post in self.posts:
+            nb_liked += len(post.liked_user)
+        return nb_liked
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

@@ -3,6 +3,7 @@
 {% block app_content %}
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.preview.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='select2/select2.min.css') }}" />
 
     <div class="row">
         {% if is_edit %}
@@ -21,6 +22,10 @@
                 {% endif %}
                 {{ form.title(class_='form-control') }}
             </div>
+            <div class="form-group">
+                {{ form.tags.label }}
+                {{ form.tags(class_='form-control tags') }}
+            </div>
 
             <div class="form-group">
                 {{ form.post.label }}
@@ -34,14 +39,26 @@
                 </div>
             </div>
             <input class="btn btn-primary" type="submit" value="提交">
+            <input class="btn btn-danger" type="button"
+                   onclick=relocated_to_user_page("{{ url_for('main.user', username=current_user.username) }}")
+                   value="取消">
         </form>
+
     </div>
+
 {% endblock %}
 
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='select2/select2.min.js') }}"></script>
+
+    <script type="application/javascript">
+        $(document).ready(function() {
+            $('.tags').select2();
+        });
+    </script>
 
     <script type="text/javascript">
         var testEditor;
@@ -57,11 +74,12 @@
                 tex: true,
                 emoji: true,
                 taskList: true,
-                tocm: true,
+                tocm: true
+                // 下列两个选项不开启，因为他与与select2冲突
                 // 开启流程图支持，默认关闭
-                flowChart: true,
+                // flowChart: true,
                 // 开启时序/序列图支持，默认关闭,
-                sequenceDiagram: true
+                // sequenceDiagram: true
             });
         });
     </script>
