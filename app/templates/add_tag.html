@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <div class="row">
+        <h1 class="text-center">添加新标签</h1>
+        <form method="post" id="form">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.tag.label }}
+                {% if form.tag.errors %}
+                    {% for e in form.tag.errors %}
+                        <p class="help-block">{{ e }}</p>
+                    {% endfor %}
+                {% endif %}
+                {{ form.tag(class_='form-control') }}
+            </div>
+            <div class="form-group">
+                <input type="submit" value="添加" class="btn btn-success btn-xs">
+                <input type="button" value="取消" class="btn btn-danger btn-xs" onclick=relocated_to_user_page("{{ url_for('main.user', username=current_user.username) }}")>
+            </div>
+        </form>
+        <hr />
+        <div class="form-group">
+            <label>已有标签</label>
+        </div>
+        {% include '_tags.html' %}
+    </div>
+{% endblock %}

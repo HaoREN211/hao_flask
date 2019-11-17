@@ -9,6 +9,7 @@ from guess_language import guess_language
 from app.models.Post import Post
 from app.main.forms.add_post import PostForm
 from app import db
+from app.models.Tag import get_multiple_fields_tags
 
 
 @bp.route('/edit_post/<post_id>', methods=['GET', 'POST'])
@@ -27,18 +28,17 @@ def edit_post(post_id):
         return redirect(url_for("main.index"))
 
     form = PostForm()
-
-    # 先将post表单里的数据保存在临时变量里
-    # 不然提交了表单之后，会将数据库原来的数据重新赋值给已经编辑过的数据
     if form.validate_on_submit():
         current_post.language = guess_language(form.post.data)
         current_post.body = form.post.data
         current_post.title = form.title.data
         db.session.commit()
+        current_post.edit_current_tag(form.list_tags.data)
         flash("帖子修改成功")
         return redirect(url_for("main.post", id=str(post_id)))
     elif request.method == 'GET':
         form.post.data = current_post.body
         form.title.data = current_post.title
-
+        form.list_tags.choices = get_multiple_fields_tags()
+        form.list_tags.data = current_post.get_list_tag_id()
     return render_template("add_post.html", form=form, is_edit=True)

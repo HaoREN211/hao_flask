@@ -25,6 +25,7 @@
 
     <hr>
     <h1 class="text-center">{{ post.title }}</h1>
+    {% include '_tags.html' %}
     <hr>
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.preview.css') }}"/>

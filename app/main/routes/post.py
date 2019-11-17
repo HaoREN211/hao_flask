@@ -15,8 +15,8 @@ def post(id):
     if (request.method=='GET') and (not current_user.is_anonymous):
         if not inside_post.author == current_user:
             current_user.view_post(inside_post)
-
+    tags = inside_post.get_all_tags_name()
     # 分页
-    return render_template('post.html', user=inside_post.author, post=inside_post)
+    return render_template('post.html', user=inside_post.author, post=inside_post, tags=tags)
 
 
