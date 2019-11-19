@@ -26,6 +26,7 @@ class Config(object):
     SQLALCHEMY_POOL_SIZE = 10
     SQLALCHEMY_MAX_OVERFLOW = 5
 
+    BOOTSTRAP_SERVE_LOCAL = True
 
 class TranslateLoginForm(object):
     Username = "账号"

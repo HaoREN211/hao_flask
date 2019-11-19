@@ -21,7 +21,28 @@
         就需要使用super()语句，才能继承基础模板中已有的内容，
         否则就是替换。 #}
         {{ super() }}
-        {{ moment.include_moment() }}
+        <script src="{{ url_for('static',filename='moment/moment-with-locales.min.js') }}"
+                integrity="sha256-AdQN98MVZs44Eq2yTwtoKufhnU+uZ7v2kXnD5vqzZVo=" crossorigin="anonymous"></script>
+{#        {{ moment.include_moment() }}#}
+        <script type="application/javascript">
+            moment.locale("zh-CN");
+            function flask_moment_render(elem) {
+                $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'));
+                $(elem).removeClass('flask-moment').show();
+            }
+            function flask_moment_render_all() {
+                $('.flask-moment').each(function() {
+                    flask_moment_render(this);
+                    if ($(this).data('refresh')) {
+                        (function(elem, interval) { setInterval(function() { flask_moment_render(elem) }, interval); })(this, $(this).data('refresh'));
+                    }
+                })
+            }
+            $(document).ready(function() {
+                flask_moment_render_all();
+            });
+        </script>
+
         {# 使用中文,默认是英语的 #}
         {{ moment.lang("zh-CN") }}　
 

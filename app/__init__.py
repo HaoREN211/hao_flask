@@ -34,6 +34,7 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     login.init_app(app)
     bootstrap.init_app(app)
+    app.config.setdefault('BOOTSTRAP_SERVE_LOCAL', True)
     moment.init_app(app)
     babel.init_app(app)
 
