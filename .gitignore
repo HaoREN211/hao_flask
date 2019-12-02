@@ -4,3 +4,4 @@ test/*
 migrations/*
 *.pyc
 logs/*
+config.py
