@@ -4,12 +4,10 @@
 
 from app.main import bp
 from flask import render_template, request, url_for
-from flask_login import login_required
 from app.models.Post import Post
 from config import Config
 
 @bp.route('/explore')
-@login_required
 def explore():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(

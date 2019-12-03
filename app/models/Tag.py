@@ -32,4 +32,3 @@ class Tag(db.Model):
     add_user = db.Column(BIGINT(unsigned=True), db.ForeignKey('user.id'), comment="创建用户")
     add_time = db.Column(db.DateTime, default=datetime.utcnow(), comment="创建时间")
     posts = db.relationship("Post", secondary=post_tag)
-

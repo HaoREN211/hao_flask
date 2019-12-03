@@ -1,5 +1,5 @@
 <div class="form-group">
     {% for tag in tags %}
-        <code>{{ tag }}</code>&nbsp;&nbsp;
+        <code onclick=window.location.href="{{ url_for("main.tag", tag_name=tag) }}">{{ tag }}</code>
     {% endfor %}
 </div>

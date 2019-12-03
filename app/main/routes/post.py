@@ -17,6 +17,6 @@ def post(id):
             current_user.view_post(inside_post)
     tags = inside_post.get_all_tags_name()
     # 分页
-    return render_template('post.html', user=inside_post.author, post=inside_post, tags=tags)
+    return render_template('post.html', user=inside_post.author, post=inside_post, tags=tags, title=inside_post.title)
 
 
