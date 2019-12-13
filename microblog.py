@@ -4,7 +4,7 @@
 
 from flask import send_from_directory
 from app import create_app, db
-from app.model import User, Post
+from app.model import User, Post, Comment
 from os.path import join
 
 app = create_app()
@@ -17,7 +17,7 @@ app.add_url_rule('/favicon.ico',view_func=favicon)
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'User': User, 'Post': Post}
+    return {'db': db, 'User': User, 'Post': Post, 'Comment': Comment}
 
 @app.template_filter('md')
 def markdown_html(txt):

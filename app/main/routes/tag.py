@@ -40,4 +40,6 @@ def tag(tag_name):
         if has_prev else None
 
     return render_template('index.html', title='标签:'+tag_name, posts=posts,
-                           next_url=next_url, prev_url=prev_url)
+                           next_url=next_url,
+                           prev_url=prev_url,
+                           tag_name=tag_name)

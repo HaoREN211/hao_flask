@@ -1,5 +1,6 @@
 <div class="form-group">
     {% for tag in tags %}
-        <code onclick=window.location.href="{{ url_for("main.tag", tag_name=tag) }}">{{ tag }}</code>
+        <input type="button" class="btn btn-xs btn-warning"
+               onclick=window.location.href="{{ url_for("main.tag", tag_name=tag) }}"; value="{{ tag }}">
     {% endfor %}
 </div>

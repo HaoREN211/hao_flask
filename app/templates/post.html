@@ -19,6 +19,9 @@
             <button class="btn btn-info btn-xs" type="button">
                 已点赞：{{ post.nb_liked_person() }}人
             </button>
+            <button class="btn btn-info btn-xs" type="button">
+                已评论：{{ post.nb_comments() }}次
+            </button>
         </div>
     </div>
 
@@ -66,12 +69,50 @@
     <div class="content" id="fancy-content">
             {{ post.body | md | safe }}
     </div>
-    <br />
-    <br />
-   <hr>
- {% if current_user==post.author %}
-        {% include '_edit_post.html' %}
+
+    <hr />
+    {% if current_user.is_authenticated %}
+        <form method="post" action="/act/comment_post">
+            <label for="comment_body">评论：</label>
+            <br />
+            <textarea id="comment_body" name="comment_body" style="width: 100%; height: 80px;"></textarea>
+            <input type="hidden" id="post_id" name="post_id" value="{{ post.id }}" >
+            <input type="hidden" id="comment_user_id" name="comment_user_id" value="{{ current_user.id }}" >
+
+            <button type="submit" class="btn btn-success btn-xs" onclick="">提交</button>
+            <button type="button" class="btn btn-warning btn-xs" onclick=clear_comment_area()>清空</button>
+            <button type="button" class="btn btn-danger btn-xs" onclick=cancel_comment()>取消</button>
+            <br />
+        </form>
+    {% else %}
+        请先<a href="/auth/login">登录</a>后再评论
     {% endif %}
+    <hr />
+    <div id="blog_comment">
+    {% for comment in post.comments %}
+        <table class="table table-hover">
+            <tr>
+                <td width="36px">
+                    <a href="{{ url_for('main.user', username=comment.comment_author.username) }}">
+                        <img src="{{ comment.comment_author.avatar(36) }}" />
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ url_for('main.user', username=comment.comment_author.username) }}">
+                        {{ comment.comment_author.username }}
+                    </a>({{ moment(comment.timestamp).fromNow() }})：
+                    <br />
+                    {{ comment.body }}
+                    <br />
+                    {% if comment.comment_user_id==current_user.id %}
+                        <font size="1" color="#a9a9a9" style="cursor:Pointer"
+                              onclick=window.location.href="/act/comment_delete/{{ post.id }}/{{ comment.id }}">删除</font>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+    </div>
 
 {% endblock %}
 
@@ -85,5 +126,20 @@
     <script src="{{ url_for('static', filename='katex/katex.js') }}"></script>
     <script src="{{ url_for('static', filename='katex/katex.min.js') }}"></script>
 
+    <script type="text/javascript">
+        // 清空评论栏里的数据
+        function clear_comment_area() {
+            var object=document.getElementById("comment_body");
+            object.value = "";
+        }
+
+        // 取消评论并返回到页面顶部
+        function cancel_comment() {
+            clear_comment_area();
+            scrollTo(0, 0);
+        }
+    </script>
+
     <script src="{{ url_for('static', filename='katex/contrib/auto-render.min.js') }}"  onload="renderMathInElement(document.body);"></script>
+
 {% endblock %}

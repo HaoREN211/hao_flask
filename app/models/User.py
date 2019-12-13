@@ -39,6 +39,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128), comment='用户密码')
 
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    comments = db.relationship('Comment', backref='comment_author', lazy='dynamic')
 
     followed = db.relationship(
         'User', secondary=followers,
@@ -55,6 +56,16 @@ class User(UserMixin, db.Model):
     liked_post = db.relationship('Post', secondary = user_likes, lazy='dynamic')
     viewed_post = db.relationship('Post', secondary=user_views_post, lazy='dynamic')
 
+    # 主动评论帖子多少次
+    def nb_comments(self):
+        return self.comments.count()
+
+    # 帖子被评论多少次
+    def nb_commented(self):
+        total = 0
+        for post in self.posts:
+            total += post.nb_comments()
+        return total
 
     # 统计用户总共浏览了多少次帖子
     def sum_views_post(self):

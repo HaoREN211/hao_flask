@@ -29,6 +29,10 @@
                     点赞：<code>{{ user.liked_post.count() }}</code>次。
                 </p>
                 <p>
+                    评论：<code>{{ user.nb_comments() }}</code>次；
+                    回复：<code>{{ user.nb_commented() }}</code>次。
+                </p>
+                <p>
                     {% if Follower %}
                         {{ Follower }}
                     {% else %}

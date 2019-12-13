@@ -9,11 +9,16 @@
             <a href="{{ url_for('main.user', username=post.author.username) }}">
                 {{ post.author.username }}
             </a>
-            ({{ moment(post.timestamp).fromNow() }}):
+            ({{ moment(post.timestamp).fromNow() }}):{% for tag in post.tags %}
+            {% endfor %}
             <br>
             <a href="{{ url_for('main.post', id=post.id) }}">
                 {{ post.title }}
             </a>
+            <br/>
+            <font size="1" color="#a9a9a9">查看:{{ post.nb_viewed_person() }}次
+                | 被点赞:{{ post.nb_liked_person() }}次
+                | 被评论:{{ post.nb_comments() }}次</font>
         </td>
     </tr>
 </table>

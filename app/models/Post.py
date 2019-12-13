@@ -19,6 +19,7 @@ class Post(db.Model):
     liked_user = db.relationship('User', secondary=user_likes)
     viewed_user = db.relationship('User', secondary=user_views_post)
     tags = db.relationship('Tag', secondary=post_tag, lazy='dynamic')
+    comments = db.relationship('Comment', backref='post_comment', lazy='dynamic')
 
     # 判断当前帖子是否被打上标签tag
     def is_post_tagged(self, tag):
@@ -98,6 +99,10 @@ class Post(db.Model):
     # 多少人浏览了这条帖子
     def nb_viewed_person(self):
         return len(self.viewed_user)
+
+    # 多少人评论了此帖子
+    def nb_comments(self):
+        return self.comments.count()
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
