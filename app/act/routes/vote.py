@@ -28,6 +28,18 @@ def vote_option(vote_id, option_id, user_id):
                            vote=current_vote)
 
 
+@bp.route("/vote/add_change/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])
+@login_required
+def add_change_vote(vote_id, option_id, user_id):
+    current_vote = VoteTopic.query.filter_by(id=vote_id).first()
+    if current_vote.is_user_vote_today(user_id):
+        db_delete_vote(vote_id, user_id)
+    if db_add_vote(vote_id, option_id, user_id):
+        flash("修改成功")
+    return render_template("act/vote.html",
+                           vote=current_vote)
+
+
 @bp.route("/vote/delete/<vote_id>/<user_id>", methods=['GET', 'POST'])
 @login_required
 def delete_vote(vote_id, user_id):
