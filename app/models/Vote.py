@@ -85,13 +85,35 @@ class VoteTopic(db.Model):
             list_users.append(User.query.filter_by(id=current_select.user_id).first())
         return list_users
 
+    # 返回投了票的同事名字列表
     def string_names_has_voted_users_today(self):
         result = self.has_voted_users_today()
         result = [x.real_name for x in result]
         return "、".join(result)
 
+    # 返回还没投票的同事名字列表
+    def string_names_not_has_voted_users_today(self):
+        result = self.has_not_voted_users_today()
+        result = [x.real_name for x in result]
+        return "、".join(result)
+
+    # 获取今日还没有投票的同事列表
+    def has_not_voted_users_today(self):
+        list_colleague = User.query.filter_by(is_colleague=1).all()
+        list_voted_colleague = self.has_voted_users_today()
+        result = list([])
+        for current_colleague in list_colleague:
+            if not current_colleague in list_voted_colleague:
+                result.append(current_colleague)
+        return result
+
+    # 统计今日投票了的同事人数
     def nb_voted_users_today(self):
         return len(self.has_voted_users_today())
+
+    # 统计今日还没投票的同事人数
+    def nb_not_voted_users_today(self):
+        return len(self.has_not_voted_users_today())
 
 
 class VoteOption(db.Model):

@@ -8,12 +8,11 @@
     <br />
         <font size="2">今日投票人数：</font>
         <font size="3" color="#a52a2a">{{ vote.nb_voted_users_today() }}</font>
-        <font size="2">(
-                {{ vote.string_names_has_voted_users_today() }}
-{#            {% for current_user in vote.has_voted_users_today() %}#}
-{#                {{ current_user.real_name }}、#}
-{#            {% endfor %}#}
-            )</font>
+        <font size="2">({{ vote.string_names_has_voted_users_today() }})</font>
+    <br />
+        <font size="2">今日未投票人数：</font>
+        <font size="3" color="#a52a2a">{{ vote.nb_not_voted_users_today() }}</font>
+        <font size="2">({{ vote.string_names_not_has_voted_users_today() }})</font>
     <br />
     {% if vote.is_user_vote_today(current_user.id) %}
         <font size="2" color="#a9a9a9"
