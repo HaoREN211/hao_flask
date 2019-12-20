@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+    <h1>{{ vote.name }}</h1>
+    {% if vote.is_user_vote_today(current_user.id) %}
+        <font size="1" color="#a9a9a9"
+              style="cursor: pointer"
+              onclick="delete_select({{ vote.id }}, {{ current_user.id }})">
+            您今天已经参与了投票，点击取消投票
+        </font>
+    {% endif %}
+    <table class="table table-hover">
+        <tr>
+            <td>选项</td>
+            <td>投票人数</td>
+        </tr>
+    {% for option in vote.options %}
+            {% if vote.is_user_vote_today(current_user.id) %}
+                <tr>
+            {% else %}
+                <tr style="cursor: pointer"
+                    onclick="vote_for_topic({{ vote.id }}, {{ option.id }}, {{ current_user.id }})">
+            {% endif %}
+                <td>
+                    {{ option.id }}：{{ option.name }}
+{#                    <input type="button" class="btn btn-warning" value="{{ option.name }}">#}
+                </td>
+                <td>
+                    {{ option.nb_user_selected_today() }}
+                    {% if option.is_user_selected_today(current_user.id) %}
+                        (已投票)
+                    {% endif %}
+                </td>
+            </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script type="text/javascript">
+        function vote_for_topic(vote_id, option_id, user_id) {
+            window.location.href="/act/vote_option/"+vote_id+"/"+option_id+"/"+user_id;
+        }
+    </script>
+
+    <script type="text/javascript">
+        function delete_select(vote_id, user_id) {
+            window.location.href="/act/delete_vote/"+vote_id+"/"+user_id;
+        }
+    </script>
+{% endblock %}

@@ -37,6 +37,7 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text, comment='关于我的个人简介')
     last_seen = db.Column(db.DateTime, default=datetime.utcnow, comment='用户最后一次登录时间')
     password_hash = db.Column(db.String(128), comment='用户密码')
+    is_colleague = db.Column(db.Boolean, comment="是否是同事", default=False)
 
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='comment_author', lazy='dynamic')
