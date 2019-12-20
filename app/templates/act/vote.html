@@ -130,8 +130,16 @@
             var vote_id = {{ vote.id }};
             var user_id = {{ current_user.id}};
             var option_id = document.getElementById("select_restaurant").value;
+            option_id = option_id.trim();
             if (option_id){
-                window.location.href="/act/vote/add_change/"+vote_id+"/"+option_id+"/"+user_id;
+                {% if vote.is_user_vote_today(current_user.id) %}
+                    if (window.confirm("您确认要修改吗？")){
+                        window.location.href="/act/vote/add_change/"+vote_id+"/"+option_id+"/"+user_id;
+                    }
+                {% else %}
+                    window.location.href="/act/vote/add_change/"+vote_id+"/"+option_id+"/"+user_id;
+                {% endif %}
+
             }
         }
 
