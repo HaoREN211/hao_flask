@@ -22,7 +22,7 @@ def vote(vote_id):
 @login_required
 def vote_option(vote_id, option_id, user_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
-    if not current_vote.is_user_vote_today:
+    if not current_vote.is_user_vote_today(user_id):
         current_vote_option = VoteOption.query.filter_by(id=option_id).first()
         current_vote_option.user_vote(user_id)
         flash("投票成功")
