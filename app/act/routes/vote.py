@@ -18,23 +18,37 @@ def vote(vote_id):
                            vote=current_vote)
 
 
-@bp.route("/vote_option/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])
+@bp.route("/vote/add/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])
 @login_required
 def vote_option(vote_id, option_id, user_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
-    if not current_vote.is_user_vote_today(user_id):
-        current_vote_option = VoteOption.query.filter_by(id=option_id).first()
-        current_vote_option.user_vote(user_id)
+    if db_add_vote(vote_id, option_id, user_id):
         flash("投票成功")
     return render_template("act/vote.html",
                            vote=current_vote)
 
 
-@bp.route("/delete_vote/<vote_id>/<user_id>", methods=['GET', 'POST'])
+@bp.route("/vote/delete/<vote_id>/<user_id>", methods=['GET', 'POST'])
 @login_required
 def delete_vote(vote_id, user_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
+    db_delete_vote(vote_id, user_id)
+    flash("取消投票")
+    return render_template("act/vote.html",
+                           vote=current_vote)
 
+@bp.route("/vote/change/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])
+@login_required
+def change_vote(vote_id, option_id, user_id):
+    current_vote = VoteTopic.query.filter_by(id=vote_id).first()
+    db_delete_vote(vote_id, user_id)
+    db_add_vote(vote_id, option_id, user_id)
+    flash("修改成功")
+    return render_template("act/vote.html",
+                           vote=current_vote)
+
+
+def db_delete_vote(vote_id, user_id):
     user_select = VoteOptionSelected.query.filter(
         and_(VoteOptionSelected.user_id == user_id,
              VoteOptionSelected.topic_id == vote_id)).all()
@@ -43,6 +57,10 @@ def delete_vote(vote_id, user_id):
             db.session.delete(current_select)
     db.session.commit()
 
-    flash("取消投票")
-    return render_template("act/vote.html",
-                           vote=current_vote)
+def db_add_vote(vote_id, option_id, user_id):
+    current_vote = VoteTopic.query.filter_by(id=vote_id).first()
+    if not current_vote.is_user_vote_today(user_id):
+        current_vote_option = VoteOption.query.filter_by(id=option_id).first()
+        current_vote_option.user_vote(user_id)
+        return True
+    return False

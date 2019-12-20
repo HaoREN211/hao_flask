@@ -3,8 +3,20 @@
 {% block app_content %}
 
     <h1>{{ vote.name }}</h1>
+        <font size="2">今日随机选项：</font>
+        <font size="3" color="#a52a2a">{{ vote.get_today_random_option() }}</font>
+    <br />
+        <font size="2">今日投票人数：</font>
+        <font size="3" color="#a52a2a">{{ vote.nb_voted_users_today() }}</font>
+        <font size="2">(
+                {{ vote.string_names_has_voted_users_today() }}
+{#            {% for current_user in vote.has_voted_users_today() %}#}
+{#                {{ current_user.real_name }}、#}
+{#            {% endfor %}#}
+            )</font>
+    <br />
     {% if vote.is_user_vote_today(current_user.id) %}
-        <font size="1" color="#a9a9a9"
+        <font size="2" color="#a9a9a9"
               style="cursor: pointer"
               onclick="delete_select({{ vote.id }}, {{ current_user.id }})">
             您今天已经参与了投票，点击取消投票
@@ -15,16 +27,16 @@
             <td>选项</td>
             <td>投票人数</td>
         </tr>
-    {% for option in vote.options %}
+    {% for option in vote.get_ordered_options() %}
             {% if vote.is_user_vote_today(current_user.id) %}
-                <tr>
+                <tr style="cursor:pointer;"
+                    onclick="change_vote({{ vote.id }}, {{ option.id }}, {{ current_user.id }})">
             {% else %}
                 <tr style="cursor: pointer"
                     onclick="vote_for_topic({{ vote.id }}, {{ option.id }}, {{ current_user.id }})">
             {% endif %}
                 <td>
                     {{ option.id }}：{{ option.name }}
-{#                    <input type="button" class="btn btn-warning" value="{{ option.name }}">#}
                 </td>
                 <td>
                     {{ option.nb_user_selected_today() }}
@@ -42,13 +54,21 @@
 
     <script type="text/javascript">
         function vote_for_topic(vote_id, option_id, user_id) {
-            window.location.href="/act/vote_option/"+vote_id+"/"+option_id+"/"+user_id;
+            window.location.href="/act/vote/add/"+vote_id+"/"+option_id+"/"+user_id;
         }
     </script>
 
     <script type="text/javascript">
         function delete_select(vote_id, user_id) {
-            window.location.href="/act/delete_vote/"+vote_id+"/"+user_id;
+            window.location.href="/act/vote/delete/"+vote_id+"/"+user_id;
+        }
+    </script>
+
+    <script type="text/javascript">
+        function change_vote(vote_id, option_id, user_id) {
+            if (window.confirm("您确认要修改您的选择？")){
+                window.location.href="/act/vote/change/"+vote_id+"/"+option_id+"/"+user_id;
+            }
         }
     </script>
 {% endblock %}
