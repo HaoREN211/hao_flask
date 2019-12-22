@@ -5,7 +5,7 @@
 from app.act import bp
 from app import db
 from flask_login import login_required
-from flask import render_template, flash
+from flask import render_template, flash, redirect, url_for
 from app.models.Vote import VoteTopic, VoteOption, VoteOptionSelected
 from operator import and_
 from datetime import datetime
@@ -14,7 +14,7 @@ from datetime import datetime
 @login_required
 def vote(vote_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
-    return render_template("act/vote.html",
+    return render_template( "act/vote.html",
                            vote=current_vote)
 
 
@@ -24,8 +24,7 @@ def vote_option(vote_id, option_id, user_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
     if db_add_vote(vote_id, option_id, user_id):
         flash("投票成功")
-    return render_template("act/vote.html",
-                           vote=current_vote)
+    return redirect(url_for("act.vote", vote_id=current_vote.id))
 
 
 @bp.route("/vote/add_change/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])
@@ -36,8 +35,7 @@ def add_change_vote(vote_id, option_id, user_id):
         db_delete_vote(vote_id, user_id)
     if db_add_vote(vote_id, option_id, user_id):
         flash("修改成功")
-    return render_template("act/vote.html",
-                           vote=current_vote)
+    return redirect(url_for("act.vote", vote_id=current_vote.id))
 
 
 @bp.route("/vote/delete/<vote_id>/<user_id>", methods=['GET', 'POST'])
@@ -46,8 +44,7 @@ def delete_vote(vote_id, user_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
     db_delete_vote(vote_id, user_id)
     flash("取消投票")
-    return render_template("act/vote.html",
-                           vote=current_vote)
+    return redirect(url_for("act.vote", vote_id=current_vote.id))
 
 @bp.route("/vote/change/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])
 @login_required
@@ -56,10 +53,9 @@ def change_vote(vote_id, option_id, user_id):
     db_delete_vote(vote_id, user_id)
     db_add_vote(vote_id, option_id, user_id)
     flash("修改成功")
-    return render_template("act/vote.html",
-                           vote=current_vote)
+    return redirect(url_for("act.vote", vote_id=current_vote.id))
 
-
+# 新增用户user_id对于投票id为vote_id的投票option_id
 def db_delete_vote(vote_id, user_id):
     user_select = VoteOptionSelected.query.filter(
         and_(VoteOptionSelected.user_id == user_id,
@@ -69,6 +65,7 @@ def db_delete_vote(vote_id, user_id):
             db.session.delete(current_select)
     db.session.commit()
 
+# 从数据库中删除用户user_id对于投票id为vote_id的投票option_id
 def db_add_vote(vote_id, option_id, user_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
     if not current_vote.is_user_vote_today(user_id):

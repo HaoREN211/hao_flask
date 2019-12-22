@@ -29,6 +29,38 @@ class VoteTopic(db.Model):
                 return True
         return False
 
+
+    # 获取date_string那天投过票的人数
+    def get_nb_vote_for_a_day(self, date_string):
+        user_select = VoteOptionSelected.query.filter_by(
+            topic_id=self.id
+        ).all()
+        list_date = [x.create_time.strftime("%Y-%m-%d") for x in user_select]
+        nb_result = 0
+        for current_date in list_date:
+            if current_date == date_string:
+                nb_result += 1
+        return nb_result
+
+    # 获取最大最小的投票时间
+    def get_max_min_vote_date(self):
+        user_select = VoteOptionSelected.query.filter_by(
+            topic_id=self.id
+        ).all()
+        date_format = "%Y-%m-%d"
+        min_date = datetime.strptime("2099-01-01", date_format)
+        max_date = datetime.strptime("1991-02-11", date_format)
+        vote_date = [x.create_time for x in user_select]
+        for current_date in vote_date:
+            if current_date < min_date:
+                min_date = current_date
+            if current_date > max_date:
+                max_date = current_date
+        min_date = datetime.strptime(min_date.strftime(date_format), date_format)
+        max_date = datetime.strptime(max_date.strftime(date_format), date_format)
+        return max_date, min_date
+
+
     # 当前投票的选项按照投票人数从高到底排序
     def get_ordered_options(self):
         list_option = self.options

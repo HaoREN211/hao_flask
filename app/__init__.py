@@ -50,6 +50,9 @@ def create_app(config_class=Config):
     from app.act import bp as act_bp
     app.register_blueprint(act_bp, url_prefix='/act')
 
+    from app.data import bp as data_bp
+    app.register_blueprint(data_bp, url_prefix='/data')
+
     if not app.debug:
         if not os.path.exists('logs'):
             os.mkdir('logs')
