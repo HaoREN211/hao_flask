@@ -24,7 +24,7 @@ def vote_option(vote_id, option_id, user_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
     if db_add_vote(vote_id, option_id, user_id):
         flash("投票成功")
-    return redirect(url_for("act.vote", vote_id=current_vote.id))
+        return redirect(url_for("act.vote", vote_id=current_vote.id))
 
 
 @bp.route("/vote/add_change/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])
@@ -35,7 +35,7 @@ def add_change_vote(vote_id, option_id, user_id):
         db_delete_vote(vote_id, user_id)
     if db_add_vote(vote_id, option_id, user_id):
         flash("修改成功")
-    return redirect(url_for("act.vote", vote_id=current_vote.id))
+        return redirect(url_for("act.vote", vote_id=current_vote.id))
 
 
 @bp.route("/vote/delete/<vote_id>/<user_id>", methods=['GET', 'POST'])

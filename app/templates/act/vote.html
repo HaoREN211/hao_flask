@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <button id="demo1">试一试</button>
-
     <h1>{{ vote.name }}</h1>
         <font size="2">今日随机选项：</font>
         <font size="3" color="#a52a2a">{{ vote.get_today_random_option() }}</font>
