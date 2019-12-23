@@ -30,6 +30,13 @@ class VoteTopic(db.Model):
         return False
 
 
+    # 统计用户关于该投票主题投票数目
+    def user_vote_cnt(self, user_id):
+        user_select = VoteOptionSelected.query.filter(
+            and_(VoteOptionSelected.user_id == user_id, VoteOptionSelected.topic_id == self.id)).all()
+        return len(user_select)
+
+
     # 获取date_string那天投过票的人数
     def get_nb_vote_for_a_day(self, date_string):
         user_select = VoteOptionSelected.query.filter_by(

@@ -7,8 +7,10 @@ from json import dumps
 from app.models.Vote import VoteTopic
 import datetime
 from math import floor
+from app.models.User import User
 
-@bp.route('/vote/<id>', methods=['POST', 'GET'])
+# 折线图数据，每日投票情况
+@bp.route('/vote/<id>', methods=['POST'])
 def vote(id):
     current_topic = VoteTopic.query.filter_by(id=id).first()
     max_date, min_date = current_topic.get_max_min_vote_date()
@@ -33,10 +35,35 @@ def vote(id):
         if (max_cnt-min_cnt) < 5:
             interval = 1
         else:
-            interval = float(float(max_cnt-min_cnt)/float(5))
+            interval = floor(float(max_cnt-min_cnt)/float(5))
 
         list_data.append(str(nb_vote))
         list_date.append('"'+current_date+'"')
     json_object = '{vote_cnt: ['+",".join(list_data)+'], vote_date:['+",".join(list_date)+'], max_cnt:'+str(max_cnt)+','\
                   +' min_cnt:'+str(min_cnt)+', interval:'+str(interval)+'}'
+    return dumps(json_object)
+
+
+# 雷达图，每人投票情况
+@bp.route('/personal_vote/<id>', methods=['POST'])
+def personal_vote(id):
+    current_topic = VoteTopic.query.filter_by(id=id).first()
+    list_colleague = User.query.filter_by(is_colleague=1).all()
+    list_name, list_nb_vote, list_names_string = list([]), list([]), list([])
+    nb_vote = 0
+
+    for current_colleague in list_colleague:
+        if (current_colleague.real_name is not None) and (current_colleague.real_name!=""):
+            list_nb_vote.append(current_topic.user_vote_cnt(current_colleague.id))
+            list_name.append(current_colleague.real_name)
+            nb_vote += 1
+
+    if nb_vote > 0:
+        max_cnt = max(list_nb_vote)
+        min_cnt = min(list_nb_vote)
+        list_names_string = ['{name:"'+list_name[x]+'", max: '+str(max_cnt)+', min: '+str(min_cnt)+'}' for x in range(nb_vote)]
+
+    list_nb_vote = [str(x) for x in list_nb_vote]
+
+    json_object = '{list_name: ['+', '.join(list_names_string)+'], data:['+', '.join(list_nb_vote)+']}'
     return dumps(json_object)

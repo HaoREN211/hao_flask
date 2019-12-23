@@ -36,8 +36,11 @@
              style="display: none;">
         </div>
     <br />
+        <div style="width: 100%;height:300px;">
         {# echarts图标 #}
-        <div id="echarts_main" style="width: 100%;height:300px;"></div>
+            <div id="personal_vote" style="width: 35%;height:100%;display: inline-block"></div>
+            <div id="echarts_main" style="width: 55%;height:100%;display: inline-block"></div>
+        </div>
 
     <table class="table table-hover" id="table_restaurant">
         <tr>
@@ -71,6 +74,7 @@
 
     <script src="{{ url_for('static',filename='js/echarts.min.js') }}"></script>
 
+    {# 每日投票人数统计 #}
     <script type="text/javascript">
         var oAjax = null;
         var postData = {"vote_id": "{{ vote.id }}"};
@@ -84,7 +88,7 @@
 
         var url = '{{ url_for("data.vote", id=vote.id) }}';
         //post方式打开文件
-        oAjax.open('get', url, true);
+        oAjax.open('post', url, true);
 
         //post相比get方式提交多了个这个
         oAjax.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -186,6 +190,86 @@
 
                     // 使用刚指定的配置项和数据显示图表。
                     myChart.setOption(option);
+        　　　　}catch(e){
+        　　　　　　alert('你访问的页面出错了');
+        　　　　}
+        　　}
+        };
+    </script>
+
+    {# 每人投票数统计 #}
+    <script type="text/javascript">
+        var oAjax2 = null;
+        var postData2 = {"vote_id": "{{ vote.id }}"};
+        postData2="vote_id="+"{{ vote.id }}";
+
+        try{
+        　　oAjax2 = new XMLHttpRequest();
+        }catch(e){
+        　　oAjax2 = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        var url2 = '{{ url_for("data.personal_vote", id=vote.id) }}';
+        //post方式打开文件
+        oAjax2.open('post', url2, true);
+
+        //post相比get方式提交多了个这个
+        oAjax2.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+
+        //post发送数据
+        oAjax2.send(postData2);
+        oAjax2.onreadystatechange = function(){
+        　　//当状态为4的时候，执行以下操作
+        　　if(oAjax2.readyState === 4){
+        　　　　try{
+                    var echart_response2 = oAjax2.responseText;
+                    // 接受一个 JSON 字符串并将其转换成一个 JavaScript 对象。
+                    var obj2 = JSON.parse(echart_response2);
+                    // 转化为json对象
+                    obj2 = eval("("+obj2+")");
+
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart2 = echarts.init(document.getElementById('personal_vote'));
+                    var data2 = obj2.data;
+                    var names2 = obj2.list_name;
+
+                    // 指定图表的配置项和数据
+                    var option2 = {
+                        title: {
+                            text: '投票统计',
+                            left: 0,
+                            top: 10,
+                            textStyle: {
+                                color: '#323232'
+                            }
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            backgroundColor : 'rgba(0,0,250,0.2)'
+                        },
+                        radar: {indicator : names2},
+                        series : [{
+                            name:'投票人',
+                            type: 'radar',
+                            symbol: 'none',
+                            lineStyle: {
+                                width: 1
+                            },
+                            emphasis: {
+                                areaStyle: {
+                                    color: 'rgba(0,250,0,0.3)'
+                                }
+                            },
+                            data:[
+                              {
+                                value:data2
+                              }
+                            ]
+                        }]
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart2.setOption(option2);
         　　　　}catch(e){
         　　　　　　alert('你访问的页面出错了');
         　　　　}
