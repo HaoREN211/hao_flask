@@ -190,6 +190,9 @@
 
                     // 使用刚指定的配置项和数据显示图表。
                     myChart.setOption(option);
+
+                    oAjax.abort();
+
         　　　　}catch(e){
         　　　　　　alert('你访问的页面出错了');
         　　　　}
@@ -270,6 +273,9 @@
 
                     // 使用刚指定的配置项和数据显示图表。
                     myChart2.setOption(option2);
+
+                    oAjax2.abort();
+
         　　　　}catch(e){
         　　　　　　alert('你访问的页面出错了');
         　　　　}
