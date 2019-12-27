@@ -24,7 +24,8 @@ def vote_option(vote_id, option_id, user_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
     if db_add_vote(vote_id, option_id, user_id):
         flash("投票成功")
-    return redirect(url_for("act.vote", vote_id=current_vote.id))
+    return render_template("act/vote.html",
+                           vote=current_vote)
 
 
 @bp.route("/vote/add_change/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])
@@ -35,7 +36,8 @@ def add_change_vote(vote_id, option_id, user_id):
         db_delete_vote(vote_id, user_id)
     if db_add_vote(vote_id, option_id, user_id):
         flash("修改成功")
-    return redirect(url_for("act.vote", vote_id=current_vote.id))
+    return render_template("act/vote.html",
+                           vote=current_vote)
 
 
 @bp.route("/vote/delete/<vote_id>/<user_id>", methods=['GET', 'POST'])
@@ -44,7 +46,8 @@ def delete_vote(vote_id, user_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
     db_delete_vote(vote_id, user_id)
     flash("取消投票")
-    return redirect(url_for("act.vote", vote_id=current_vote.id))
+    return render_template("act/vote.html",
+                           vote=current_vote)
 
 @bp.route("/vote/change/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])
 @login_required
@@ -53,7 +56,8 @@ def change_vote(vote_id, option_id, user_id):
     db_delete_vote(vote_id, user_id)
     db_add_vote(vote_id, option_id, user_id)
     flash("修改成功")
-    return redirect(url_for("act.vote", vote_id=current_vote.id))
+    return render_template("act/vote.html",
+                           vote=current_vote)
 
 # 新增用户user_id对于投票id为vote_id的投票option_id
 def db_delete_vote(vote_id, user_id):
