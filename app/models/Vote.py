@@ -111,7 +111,6 @@ class VoteTopic(db.Model):
             option_id = current_option_id,
         )
         db.session.add(current_random_option)
-        db.session.commit()
 
 
     def has_voted_users_today(self):

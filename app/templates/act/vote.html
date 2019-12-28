@@ -3,15 +3,15 @@
 {% block app_content %}
     <h1>{{ vote.name }}</h1>
         <font size="2">今日随机选项：</font>
-        <font size="3" color="#a52a2a">{{ vote.get_today_random_option() }}</font>
+        <font size="3" color="#a52a2a">{{ random_option }}</font>
     <br />
         <font size="2">今日投票人数：</font>
-        <font size="3" color="#a52a2a">{{ vote.nb_voted_users_today() }}</font>
-        <font size="2">({{ vote.string_names_has_voted_users_today() }})</font>
+        <font size="3" color="#a52a2a">{{ nb_voted_users_today }}</font>
+        <font size="2">({{ string_names_has_voted_users_today }})</font>
     <br />
         <font size="2">今日未投票人数：</font>
-        <font size="3" color="#a52a2a">{{ vote.nb_not_voted_users_today() }}</font>
-        <font size="2">({{ vote.string_names_not_has_voted_users_today() }})</font>
+        <font size="3" color="#a52a2a">{{ nb_not_voted_users_today }}</font>
+        <font size="2">({{ string_names_not_has_voted_users_today }})</font>
     <br />
     {% if vote.is_user_vote_today(current_user.id) %}
         <font size="2" color="#a9a9a9"
@@ -31,9 +31,16 @@
             <span class="input-group-addon">☜(ﾟヮﾟ☜)</span>
         </div>
 
+
+
         <div id="list_restaurant"
              class="input-group"
              style="display: none;">
+        </div>
+
+        <div class="input-group">
+            <br />
+            <input type="button" class="btn btn-primary btn-xs" value="新增店铺" onclick=window.location.href="{{ url_for('act.vote_option_add', vote_id=vote.id) }}">
         </div>
     <br />
         <div style="width: 100%;height:300px;">

@@ -12,6 +12,7 @@ import datetime
 from math import floor
 from app.act.forms.echarts_form import VoteLineChartData, VoteRadarData
 from app.models.User import User
+from app.act.forms.vote import VoteOptionAddForm
 
 
 # 折线图数据，每日投票情况
@@ -84,12 +85,37 @@ def vote_radar_data(id):
 def vote(vote_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
 
+    if not current_vote.has_random_option_today():
+        current_vote.generate_random_option()
+
+    random_option = current_vote.find_today_random_option()
+
     data_vote_line_chart = vote_line_chart_data(vote_id)
     data_vote_radar = vote_radar_data(vote_id)
+    nb_voted_users_today = current_vote.nb_voted_users_today()
+    string_names_has_voted_users_today=current_vote.string_names_has_voted_users_today()
+    nb_not_voted_users_today = current_vote.nb_not_voted_users_today()
+    string_names_not_has_voted_users_today = current_vote.string_names_not_has_voted_users_today()
 
     return render_template( "act/vote.html",
                            vote=current_vote,
-                            data_vote_line_chart=data_vote_line_chart, data_vote_radar=data_vote_radar)
+                            data_vote_line_chart=data_vote_line_chart,
+                            data_vote_radar=data_vote_radar,
+                            random_option=random_option,
+                            nb_voted_users_today=nb_voted_users_today,
+                            string_names_has_voted_users_today=string_names_has_voted_users_today,
+                            nb_not_voted_users_today=nb_not_voted_users_today,
+                            string_names_not_has_voted_users_today=string_names_not_has_voted_users_today)
+
+@bp.route("/vote/option/add/<vote_id>", methods=['GET', 'POST'])
+@login_required
+def vote_option_add(vote_id):
+    current_vote = VoteTopic.query.filter_by(id=vote_id).first()
+    option = VoteOptionAddForm()
+    if option.validate_on_submit():
+        flash("成功添加商铺\""+option.option_name.data+"\"")
+        return redirect(url_for("act.vote", vote_id=vote_id))
+    return render_template("act/vote_option_add.html", vote=current_vote, option=option)
 
 
 @bp.route("/vote/add/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])

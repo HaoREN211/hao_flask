@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+    {% block app_content %}
+
+        <form role="form" method="post" id="option" name="option">
+            {{ option.csrf_token() }}
+            <div class="row">
+                <h1>{{ vote.name }}</h1>
+                <hr />
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="vote_id">{{ option.vote_id.label }}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    {{ option.vote_id(class="form-control", value=vote.id, readonly="readonly") }}
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="vote_id">{{ option.user_id.label }}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    {{ option.user_id(class="form-control", value=current_user.id, readonly="readonly") }}
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="vote_id">{{ option.option_name.label }}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    {{ option.option_name(class="form-control", placeholder="餐馆名称") }}
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+        </form>
+        <input type="button" class="btn btn-success btn-xs" value="确认">
+        <input type="button" class="btn btn-danger btn-xs" value="返回" onclick=window.location.href="{{ url_for('act.vote', vote_id=vote.id) }}">
+    {% endblock %}

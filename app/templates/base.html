@@ -108,18 +108,17 @@
                                 <a href="{{ url_for('main.explore') }}">更多</a>
                             </li>
                         {% if not current_user.is_anonymous %}
-                            {% if current_user.is_colleague %}
-{#                                <li>#}
-{#                                    <a href="{{ url_for('act.vote') }}">投票</a>#}
-{#                                </li>#}
-                            {% endif %}
-
                             <li>
                                 <a href="{{ url_for('main.add_post') }}">帖子</a>
                             </li>
                             <li>
                                 <a href="{{ url_for('main.add_tag') }}">标签</a>
                             </li>
+                            {% if current_user.is_colleague %}
+                                <li>
+                                    <a href="{{ url_for('act.vote', vote_id=1) }}">投票</a>
+                                </li>
+                            {% endif %}
                         {% endif %}
                     </ul>
                     <ul class="nav navbar-nav"  style="position: absolute; top: 20%; left: 40%; " >
