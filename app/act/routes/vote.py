@@ -6,6 +6,7 @@ from app.act import bp
 from app import db
 from flask_login import login_required
 from flask import render_template, flash, redirect, url_for
+from flask_login import current_user
 from app.models.Vote import VoteTopic, VoteOption, VoteOptionSelected
 from operator import and_
 import datetime
@@ -107,15 +108,24 @@ def vote(vote_id):
                             nb_not_voted_users_today=nb_not_voted_users_today,
                             string_names_not_has_voted_users_today=string_names_not_has_voted_users_today)
 
+# 新增投票的选项
 @bp.route("/vote/option/add/<vote_id>", methods=['GET', 'POST'])
 @login_required
 def vote_option_add(vote_id):
     current_vote = VoteTopic.query.filter_by(id=vote_id).first()
+    option_names = current_vote.get_option_names()
     option = VoteOptionAddForm()
     if option.validate_on_submit():
-        flash("成功添加商铺\""+option.option_name.data+"\"")
+        new_option = VoteOption(
+            topic_id = vote_id,
+            create_user = current_user.id,
+            name = option.option_name.data
+        )
+        db.session.add(new_option)
+        flash("成功添加餐馆\""+option.option_name.data+"\"")
         return redirect(url_for("act.vote", vote_id=vote_id))
-    return render_template("act/vote_option_add.html", vote=current_vote, option=option)
+    return render_template("act/vote_option_add.html", vote=current_vote,
+                           option=option, option_names=option_names)
 
 
 @bp.route("/vote/add/<vote_id>/<option_id>/<user_id>", methods=['GET', 'POST'])

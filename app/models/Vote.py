@@ -20,6 +20,13 @@ class VoteTopic(db.Model):
     options = db.relationship('VoteOption', backref='topic', lazy='dynamic')
     selected = db.relationship('VoteOptionSelected', backref='topic', lazy='dynamic')
 
+
+    # 获取当前投票的选项列表
+    def get_option_names(self):
+        list_options = VoteOption.query.filter_by(topic_id=self.id).all()
+        option_name = [str(x.name).strip() for x in list_options]
+        return option_name
+
     # 用户今天是否参与了投票
     def is_user_vote_today(self, user_id):
         user_select = VoteOptionSelected.query.filter(
