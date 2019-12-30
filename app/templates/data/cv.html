@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <div class="row">
+        <div class="col-sm-3">
+            <div id="div_add_main_attribute">
+                <div class="row">
+                    <font size="3">
+                        姓名：{{ cv.author.real_name }}
+                    </font>
+                </div>
+
+                {% for current_main_attribute in cv.main_attributes %}
+                    <div class="row">
+                        <font size="3">
+                            {{ current_main_attribute.name }}：{{ current_main_attribute.value }}
+                        </font>
+                    </div>
+                {% endfor %}
+
+                <div class="row" id="div_add_cv_main_attribute" hidden>
+                        <br />
+                        <form method="post" id="cv_main_attribute_form" name="cv_main_attribute_form">
+                            {{ cv_main_attribute_form.csrf_token() }}
+                            <div class="input-group col-sm-10">
+                                <span class="input-group-addon">属性键</span>
+                                {{ cv_main_attribute_form.attribute_key(class="form-control", placeholder="属性名称", autocomplete="off") }}
+                            </div>
+                            <br />
+                            <div class="input-group col-sm-10">
+                                <span class="input-group-addon">属性值</span>
+                                {{ cv_main_attribute_form.attribute_value(class="form-control", placeholder="属性值", autocomplete="off") }}
+                            </div>
+                            <br />
+                            <div class="input-group col-sm-10">
+                                {{ cv_main_attribute_form.submit(class="btn btn-xs btn-primary") }}&nbsp;
+                                <input type="button" class="btn btn-danger btn-xs" value="取消" onclick="cancel_cv_main_attribute()">
+                            </div>
+                        </form>
+                </div>
+                {% if not current_user.is_anonymous %}
+                    {% if current_user.id==cv.author.id %}
+                        <br />
+                        <div class="row" id="div_control_cv_main_attribute">
+                            <input type="button" class="btn btn-success btn-xs" value="添加" onclick="add_cv_main_attribute()">
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <hr />
+            <div id="div_add_enterprise">
+                <h3 style="text-align: center">
+                    教育经历
+                </h3>
+                <div class="row" id="div_add_cv_school" hidden>
+                    <br />
+                    <form method="post" id="cv_school" name="cv_school">
+                        {{ cv_school.csrf_token() }}
+                        <div class="input-group col-sm-10">
+                            <span class="input-group-addon">学校名称</span>
+                            {{ cv_school.name(class="form-control", placeholder="学校名称", autocomplete="off") }}
+                        </div>
+                        <br />
+                        <div class="input-group col-sm-10">
+                            <span class="input-group-addon">入学时间</span>
+                            {{ cv_school.start_time(class="form-control", placeholder="入学时间", autocomplete="off", type="date") }}
+                        </div>
+                        <br />
+                        <div class="input-group col-sm-10">
+                            {{ cv_school.submit(class="btn btn-xs btn-primary") }}&nbsp;
+                            <input type="button" class="btn btn-danger btn-xs" value="取消" onclick="cancel_cv_school()">
+                        </div>
+                    </form>
+                </div>
+                {% if not current_user.is_anonymous %}
+                    {% if current_user.id==cv.author.id %}
+                        <br />
+                        <div class="row" id="div_control_cv_school">
+                            <input type="button" class="btn btn-success btn-xs" value="添加" onclick="add_cv_school()">
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm1">
+            <div style='width:1px;border:1px solid darkgray;float:left;height:500px'>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="application/javascript">
+        function add_cv_main_attribute() {
+            document.getElementById("div_add_cv_main_attribute").removeAttribute("hidden");
+            document.getElementById("div_control_cv_main_attribute").setAttribute("hidden", true);
+        }
+
+        function cancel_cv_main_attribute() {
+            document.getElementById("div_add_cv_main_attribute").setAttribute("hidden", true);
+            document.getElementById("div_control_cv_main_attribute").removeAttribute("hidden");
+        }
+        
+        function add_cv_school() {
+            document.getElementById("div_add_cv_school").removeAttribute("hidden");
+            document.getElementById("div_control_cv_school").setAttribute("hidden", true);
+        }
+
+        function cancel_cv_school() {
+            document.getElementById("div_add_cv_school").setAttribute("hidden", true);
+            document.getElementById("div_control_cv_school").removeAttribute("hidden");
+        }
+    </script>
+{% endblock %}

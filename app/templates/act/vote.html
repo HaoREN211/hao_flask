@@ -21,22 +21,20 @@
         </font>
     {% endif %}
 
-    <br />
-        <div class="input-group">
-            <span class="input-group-addon">(☞ﾟヮﾟ)☞ </span>
-            <input type="text"
-                   id="search_text"
-                   class="form-control"
-                   placeholder="搜索店铺">
-            <span class="input-group-addon">☜(ﾟヮﾟ☜)</span>
-        </div>
-
-
-
-        <div id="list_restaurant"
-             class="input-group"
-             style="display: none;">
-        </div>
+{#    <br />#}
+{#        <div class="input-group">#}
+{#            <span class="input-group-addon">(☞ﾟヮﾟ)☞ </span>#}
+{#            <input type="text"#}
+{#                   id="search_text"#}
+{#                   class="form-control"#}
+{#                   placeholder="搜索店铺">#}
+{#            <span class="input-group-addon">☜(ﾟヮﾟ☜)</span>#}
+{#        </div>#}
+{##}
+{#        <div id="list_restaurant"#}
+{#             class="input-group"#}
+{#             style="display: none;">#}
+{#        </div>#}
 
         <div class="input-group">
             <br />
@@ -100,147 +98,147 @@
 
     <script type="text/javascript">
         // 监听搜索框内容变化事件
-        var node = document.querySelector('#search_text');
-        var window_restaurant = document.querySelector('#list_restaurant');
-        var inputLock = false;
-        var mouseLock = false;
-        var mouseId = -1;
-        var current_choice = -1;
-        var list_restaurant = document.getElementsByClassName("class_restaurant");
+{#        var node = document.querySelector('#search_text');#}
+{#        var window_restaurant = document.querySelector('#list_restaurant');#}
+{#        var inputLock = false;#}
+{#        var mouseLock = false;#}
+{#        var mouseId = -1;#}
+{#        var current_choice = -1;#}
+{#        var list_restaurant = document.getElementsByClassName("class_restaurant");#}
 
         // 找到包含特定字符串（搜索框输入字符串）的餐馆数量
-        function nb_restaurant_concluding_string() {
-            var restaurants = list_restaurant_concluding_string();
-            var nb_result = restaurants.length;
-            if (nb_result > 10){
-                nb_result = 10;
-            }
-            if(nb_result === 1){
-                nb_result = 2;
-            }
-            return nb_result
-        }
+{#        function nb_restaurant_concluding_string() {#}
+{#            var restaurants = list_restaurant_concluding_string();#}
+{#            var nb_result = restaurants.length;#}
+{#            if (nb_result > 10){#}
+{#                nb_result = 10;#}
+{#            }#}
+{#            if(nb_result === 1){#}
+{#                nb_result = 2;#}
+{#            }#}
+{#            return nb_result#}
+{#        }#}
 
-        function change_vote_via_search_windows(){
-            var vote_id = {{ vote.id }};
-            var user_id = {{ current_user.id}};
-            var option_id = document.getElementById("select_restaurant").value;
-            option_id = option_id.trim();
-            if (option_id){
-                {% if vote.is_user_vote_today(current_user.id) %}
-                    if (window.confirm("您确认要修改吗？")){
-                        window.location.href="/act/vote/add_change/"+vote_id+"/"+option_id+"/"+user_id;
-                    }
-                {% else %}
-                    window.location.href="/act/vote/add_change/"+vote_id+"/"+option_id+"/"+user_id;
-                {% endif %}
-
-            }
-        }
+{#        function change_vote_via_search_windows(){#}
+{#            var vote_id = {{ vote.id }};#}
+{#            var user_id = {{ current_user.id}};#}
+{#            var option_id = document.getElementById("select_restaurant").value;#}
+{#            option_id = option_id.trim();#}
+{#            if (option_id){#}
+{#                {% if vote.is_user_vote_today(current_user.id) %}#}
+{#                    if (window.confirm("您确认要修改吗？")){#}
+{#                        window.location.href="/act/vote/add_change/"+vote_id+"/"+option_id+"/"+user_id;#}
+{#                    }#}
+{#                {% else %}#}
+{#                    window.location.href="/act/vote/add_change/"+vote_id+"/"+option_id+"/"+user_id;#}
+{#                {% endif %}#}
+{##}
+{#            }#}
+{#        }#}
 
         // 找到包含特定字符串（搜索框输入字符串）的餐馆列表
-        function list_restaurant_concluding_string() {
-            var results = [];
-            var nb_result = 0;
-            for (var i=0, len=list_restaurant.length; i<len; i++){
-                var current_restaurant = list_restaurant[i].innerHTML;
-                var current_restaurant_name = get_restaurant_name(current_restaurant);
-                if (current_restaurant_name.search(node.value)!==-1){
-                    results[nb_result] = current_restaurant;
-                    nb_result += 1;
-                }
-            }
-            return results
-        }
+{#        function list_restaurant_concluding_string() {#}
+{#            var results = [];#}
+{#            var nb_result = 0;#}
+{#            for (var i=0, len=list_restaurant.length; i<len; i++){#}
+{#                var current_restaurant = list_restaurant[i].innerHTML;#}
+{#                var current_restaurant_name = get_restaurant_name(current_restaurant);#}
+{#                if (current_restaurant_name.search(node.value)!==-1){#}
+{#                    results[nb_result] = current_restaurant;#}
+{#                    nb_result += 1;#}
+{#                }#}
+{#            }#}
+{#            return results#}
+{#        }#}
 
-        function focus_restaurant(restaurant_id) {
-            if (current_choice !== restaurant_id){
-                if (!mouseLock){
-                    current_choice=restaurant_id;
-                    mouseId = current_choice;
-                    show_tips_windows()
-                }
-                else{
-                    if (mouseId !== restaurant_id){
-                        mouseLock = false;
-                        current_choice=restaurant_id;
-                        mouseId = current_choice;
-                        show_tips_windows()
-                    }
-                }
-            }
-        }
-
-        function show_tips_windows() {
-            // 从页面中读取所有的餐馆列表，只打印名字中包含搜索框字符串的餐馆
-            var nb_result = nb_restaurant_concluding_string();
-
-            var restaurants = list_restaurant_concluding_string();
-
-            var innerHTML = '<select class="form-control" id="select_restaurant" size="'+nb_result+'">';
-            for (var i=0, len=restaurants.length; i<len; i++){
-                var current_restaurant = restaurants[i];
-                var current_restaurant_name = get_restaurant_name(current_restaurant);
-                var current_restaurant_id = get_restaurant_id(current_restaurant);
-                if (i===current_choice){
-                    innerHTML += '<option value="'+current_restaurant_id+'" selected onmouseover="focus_restaurant('+i+')" onclick="change_vote_via_search_windows()">'+current_restaurant_name+'</option>'
-                }
-                else{
-                    innerHTML = innerHTML + '<option value="'+current_restaurant_id+'" onmouseover="focus_restaurant('+i+')" onclick="change_vote_via_search_windows()">'+current_restaurant_name+'</option>'
-                }
-            }
-            innerHTML += '</select>';
-            window_restaurant.innerHTML=innerHTML;
-            window_restaurant.style.display="block";
-            if (nb_result===0){
-                window_restaurant.style.display="none";
-            }
-        }
-
-        $('#search_text').on('compositionstart', function () {
-            inputLock = true
-        }).on('compositionend',function () {
-            inputLock = false
-        }).on('input', function () {
-          //定时器内才会生效 注意：定时器内this指向已发生改变
-            setTimeout(function(){
-                if (!inputLock){
-                    current_choice = -1;
-                    // 输入框为空的时候隐藏提示窗口
-                    if (node.value.trim() === ""){
-                        window_restaurant.style.display="none";
-                    }
-                    else{
+{#        function focus_restaurant(restaurant_id) {#}
+{#            if (current_choice !== restaurant_id){#}
+{#                if (!mouseLock){#}
+{#                    current_choice=restaurant_id;#}
+{#                    mouseId = current_choice;#}
+{#                    show_tips_windows()#}
+{#                }#}
+{#                else{#}
+{#                    if (mouseId !== restaurant_id){#}
+{#                        mouseLock = false;#}
+{#                        current_choice=restaurant_id;#}
+{#                        mouseId = current_choice;#}
+{#                        show_tips_windows()#}
+{#                    }#}
+{#                }#}
+{#            }#}
+{#        }#}
+{##}
+{#        function show_tips_windows() {#}
+{#            // 从页面中读取所有的餐馆列表，只打印名字中包含搜索框字符串的餐馆#}
+{#            var nb_result = nb_restaurant_concluding_string();#}
+{##}
+{#            var restaurants = list_restaurant_concluding_string();#}
+{##}
+{#            var innerHTML = '<select class="form-control" id="select_restaurant" size="'+nb_result+'">';#}
+{#            for (var i=0, len=restaurants.length; i<len; i++){#}
+{#                var current_restaurant = restaurants[i];#}
+{#                var current_restaurant_name = get_restaurant_name(current_restaurant);#}
+{#                var current_restaurant_id = get_restaurant_id(current_restaurant);#}
+{#                if (i===current_choice){#}
+{#                    innerHTML += '<option value="'+current_restaurant_id+'" selected onmouseover="focus_restaurant('+i+')" onclick="change_vote_via_search_windows()">'+current_restaurant_name+'</option>'#}
+{#                }#}
+{#                else{#}
+{#                    innerHTML = innerHTML + '<option value="'+current_restaurant_id+'" onmouseover="focus_restaurant('+i+')" onclick="change_vote_via_search_windows()">'+current_restaurant_name+'</option>'#}
+{#                }#}
+{#            }#}
+{#            innerHTML += '</select>';#}
+{#            window_restaurant.innerHTML=innerHTML;#}
+{#            window_restaurant.style.display="block";#}
+{#            if (nb_result===0){#}
+{#                window_restaurant.style.display="none";#}
+{#            }#}
+{#        }#}
+{##}
+{#        $('#search_text').on('compositionstart', function () {#}
+{#            inputLock = true#}
+{#        }).on('compositionend',function () {#}
+{#            inputLock = false#}
+{#        }).on('input', function () {#}
+{#          //定时器内才会生效 注意：定时器内this指向已发生改变#}
+{#            setTimeout(function(){#}
+{#                if (!inputLock){#}
+{#                    current_choice = -1;#}
+{#                    // 输入框为空的时候隐藏提示窗口#}
+{#                    if (node.value.trim() === ""){#}
+{#                        window_restaurant.style.display="none";#}
+{#                    }#}
+{#                    else{#}
 {#                        var innerHTML = '<ul class="list-group">';#}
-                        mouseLock = false;
-                        show_tips_windows()
-                    }
-                }
-            })
-        }).on('keyup', function (e) {
-            // 40 向下
-            // 38 向上
-            // 13 回车
-            var nb_restaurant = nb_restaurant_concluding_string();
-            if (e.keyCode ===40){
-                mouseLock = true;
-                current_choice = current_choice + 1;
-                current_choice = current_choice % nb_restaurant;
-                show_tips_windows()
-            }
-            if(e.keyCode === 38){
-                if (current_choice === -1){
-                    current_choice = 0
-                }
-                current_choice = current_choice + nb_restaurant - 1;
-                current_choice = current_choice % nb_restaurant;
-                mouseLock = true;
-                show_tips_windows()
-            }
-
-            if(e.keyCode === 13){
-                change_vote_via_search_windows()
-            }
-        });
+{#                        mouseLock = false;#}
+{#                        show_tips_windows()#}
+{#                    }#}
+{#                }#}
+{#            })#}
+{#        }).on('keyup', function (e) {#}
+{#            // 40 向下#}
+{#            // 38 向上#}
+{#            // 13 回车#}
+{#            var nb_restaurant = nb_restaurant_concluding_string();#}
+{#            if (e.keyCode ===40){#}
+{#                mouseLock = true;#}
+{#                current_choice = current_choice + 1;#}
+{#                current_choice = current_choice % nb_restaurant;#}
+{#                show_tips_windows()#}
+{#            }#}
+{#            if(e.keyCode === 38){#}
+{#                if (current_choice === -1){#}
+{#                    current_choice = 0#}
+{#                }#}
+{#                current_choice = current_choice + nb_restaurant - 1;#}
+{#                current_choice = current_choice % nb_restaurant;#}
+{#                mouseLock = true;#}
+{#                show_tips_windows()#}
+{#            }#}
+{##}
+{#            if(e.keyCode === 13){#}
+{#                change_vote_via_search_windows()#}
+{#            }#}
+{#        });#}
     </script>
 {% endblock %}

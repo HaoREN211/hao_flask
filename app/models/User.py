@@ -10,6 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.Post import Post
 from datetime import datetime, timedelta
 from app.models.User_action import user_likes, user_views_user, user_views_post
+from permission import Permission
 
 
 followers = db.Table('user_followers',
@@ -39,6 +40,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128), comment='用户密码')
     is_colleague = db.Column(db.Boolean, comment="是否是同事", default=False)
     real_name = db.Column(db.String(128), comment='用户真实姓名')
+    is_admin = db.Column(db.Boolean, comment='是否是超级管理员', default=False)
 
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='comment_author', lazy='dynamic')
@@ -57,6 +59,14 @@ class User(UserMixin, db.Model):
 
     liked_post = db.relationship('Post', secondary = user_likes, lazy='dynamic')
     viewed_post = db.relationship('Post', secondary=user_views_post, lazy='dynamic')
+    permissions = db.relationship('Permission', secondary='user_permission', lazy='dynamic')
+
+    # 判断用户是否有编辑简历的权限
+    def has_cv_permission(self):
+        for current_permission in self.permissions:
+            if current_permission.name == Permission.CV:
+                return True
+        return False
 
     # 主动评论帖子多少次
     def nb_comments(self):
@@ -151,6 +161,7 @@ class User(UserMixin, db.Model):
     def is_following(self, user):
         return self.followed.filter(
             followers.c.followed_id == user.id).count() > 0
+
 
     # 返回当前用户关注对象的最新动态
     def followed_posts(self):

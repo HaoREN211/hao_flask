@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h3>您好, {{ current_user.username }}!</h3>
+    <font color="#a9a9a9">您的简历列表</font>
+
+    {# 简历列表 #}
+    <table class="table table-hover">
+        {% for cv in cvs %}
+        <tr>
+            <td>
+                <a href="{{ url_for('data.cv', id=cv.id) }}">{{ cv.name }}</a>
+                <br />
+                <font size="1" color="#a9a9a9">创建于{{ moment(cv.create_time).fromNow() }}，</font>
+                <font size="1" color="#a9a9a9">最后修改于{{ moment(cv.update_time).fromNow() }}</font>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {# 上一页下一页按钮 #}
+    <nav aria-label="...">
+        <ul class="pager">
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> 上一页
+                </a>
+            </li>
+            <li class="next{% if not next_url %} disabled{% endif %}">
+                <a href="{{ next_url or '#' }}">
+                    下一页 <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}

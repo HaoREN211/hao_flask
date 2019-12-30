@@ -72,3 +72,22 @@ post_tag = db.Table(
           default=datetime.utcnow()),
     comment='用户添加帖子标签'
 )
+
+user_permission = db.Table('user_permission',
+    db.Column('id',
+        BIGINT(unsigned=True),
+        primary_key=True,
+        comment='用户权限ID'),
+    db.Column('permission_id',
+        BIGINT(unsigned=True),
+        db.ForeignKey('permission.id'),
+        comment='权限ID'),
+    db.Column('user_id',
+        BIGINT(unsigned=True),
+        db.ForeignKey('user.id'),
+        comment='用户ID'),
+    db.Column('create_time',
+          db.TIMESTAMP,
+          comment='创建时间',
+          default=datetime.utcnow()),
+)

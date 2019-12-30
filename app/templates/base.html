@@ -127,14 +127,20 @@
                         {% endif %}
                     </ul>
                     <ul class="nav navbar-nav" style="float: right">
+
                         <li>
                             <a onclick="submit_search()">搜索</a>
                         </li>
-                        <li>
-                            {% if not current_user.is_anonymous %}
-                                <a href="{{ url_for('auth.logout') }}">登出</a>
+                        {% if not current_user.is_anonymous %}
+                            {% if current_user.has_cv_permission() %}
+                                <li>
+                                    <a href="{{ url_for('data.cvs') }}">简历</a>
+                                </li>
                             {% endif %}
-                        </li>
+                            <li>
+                                <a href="{{ url_for('auth.logout') }}">登出</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
