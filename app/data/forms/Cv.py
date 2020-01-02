@@ -29,6 +29,7 @@ class CvEnterpriseForm(FlaskForm):
     end_time = DateField("离职时间", validators=[DataRequired()])
     position = StringField("职位", validators=[DataRequired()])
     location = StringField("工作地点", validators=[DataRequired()])
+    is_internship = IntegerField("是否是实习经历", validators=[DataRequired()])
     submit = SubmitField("确认")
 
 

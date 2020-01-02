@@ -38,6 +38,13 @@ class Cv(db.Model):
     # 获取以入职时间从晚到早排序的公司列表
     def get_start_time_ordered_enterprises(self):
         list_enterprises = self.enterprises
+        list_enterprises = list(filter(lambda x: x.is_internship == False, list_enterprises))
+        return sorted(list_enterprises, key=lambda x: x.start_time, reverse=True)
+
+    # 获取以入职时间从晚到早排序的实习公司列表
+    def get_start_time_ordered_internship(self):
+        list_enterprises = self.enterprises
+        list_enterprises = list(filter(lambda x: x.is_internship == True, list_enterprises))
         return sorted(list_enterprises, key=lambda x: x.start_time, reverse=True)
 
     # 获取以入职时间从晚到早排序的项目列表
@@ -73,6 +80,7 @@ class CvEnterprise(db.Model):
     end_time = db.Column(db.Date, comment="离职时间")
     position = db.Column(db.String(100), comment="职位")
     location = db.Column(db.String(100), comment="工作地点")
+    is_internship = db.Column(db.Boolean, default=False, comment="是否是实习经验")
 
     responsibilities = db.relationship('CvResponsibility', backref='enterprise')
 

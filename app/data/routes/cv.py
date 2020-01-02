@@ -61,6 +61,9 @@ def cv(id):
         return redirect(url_for("data.cv", id=current_cv.id))
 
     if cv_enterprise_form.validate_on_submit():
+        is_internship = False
+        if cv_enterprise_form.is_internship.data == 1:
+            is_internship = True
         to_add = CvEnterprise(
             cv_id=id,
             name=cv_enterprise_form.name.data,
@@ -69,7 +72,8 @@ def cv(id):
             start_time=cv_enterprise_form.start_time.data,
             end_time=cv_enterprise_form.end_time.data,
             position=cv_enterprise_form.position.data,
-            location=cv_enterprise_form.location.data
+            location=cv_enterprise_form.location.data,
+            is_internship=is_internship
         )
         db.session.add(to_add)
         return redirect(url_for("data.cv", id=current_cv.id))
@@ -125,6 +129,9 @@ def cv_edit(id):
         return redirect(url_for("data.cv", id=current_cv.id))
 
     if cv_enterprise_form.validate_on_submit():
+        is_internship = False
+        if cv_enterprise_form.is_internship.data == 1:
+            is_internship = True
         to_add = CvEnterprise(
             cv_id=id,
             name=cv_enterprise_form.name.data,
@@ -133,7 +140,8 @@ def cv_edit(id):
             start_time=cv_enterprise_form.start_time.data,
             end_time=cv_enterprise_form.end_time.data,
             position=cv_enterprise_form.position.data,
-            location=cv_enterprise_form.location.data
+            location=cv_enterprise_form.location.data,
+            is_internship=is_internship
         )
         db.session.add(to_add)
         return redirect(url_for("data.cv", id=current_cv.id))
