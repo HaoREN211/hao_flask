@@ -1,0 +1,73 @@
+<div id="div_add_main_attribute">
+    <table class="table-hover table-condensed">
+        {% if current_cv.image_link %}
+            <tr><td style="text-align: center">
+                <img src="{{ current_cv.image_link }}" style="height: 200px">
+            </td></tr>
+        {% endif %}
+        <tr>
+            <td>
+                <font size="3">
+                姓名：
+                    {% if current_cv and current_cv.author.real_name %}
+                        {{ current_cv.author.real_name }}
+                    {% endif %}
+            </font>
+            </td>
+        </tr>
+        {% for current_main_attribute in current_cv.main_attributes %}
+            <tr><td>
+                <font size="3">
+                    {{ current_main_attribute.name }}：{{ current_main_attribute.value }}
+                </font>
+            </td></tr>
+        {% endfor %}
+
+        {% if not current_user.is_anonymous %}
+            {% if current_user.id==current_cv.author.id %}
+                {% if is_edited %}
+                    <tr><td>
+                        <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalCvMainAttribute">
+                            添加
+                        </button>
+                        <!-- 模态框（Modal） -->
+                        <div class="modal fade" id="myModalCvMainAttribute" tabindex="-1" role="dialog" aria-labelledby="myModalCvMainAttributeLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                        </button>
+                                        <h4 class="modal-title" id="myModalCvMainAttributeLabel">
+                                            添加简历主属性
+                                        </h4>
+                                    </div>
+                                    <form method="post" id="cv_main_attribute_form" name="cv_main_attribute_form">
+                                        <div class="modal-body">
+                                            {{ cv_main_attribute_form.csrf_token() }}
+                                            <div class="input-group col-sm-10">
+                                                <span class="input-group-addon">属性键</span>
+                                                {{ cv_main_attribute_form.attribute_key(class="form-control", placeholder="属性名称", autocomplete="off") }}
+                                            </div>
+                                            <br />
+                                            <div class="input-group col-sm-10">
+                                                <span class="input-group-addon">属性值</span>
+                                                {{ cv_main_attribute_form.attribute_value(class="form-control", placeholder="属性值", autocomplete="off") }}
+                                            </div>
+                                            <br />
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{ cv_main_attribute_form.submit(class="btn btn-xs btn-primary") }}&nbsp;
+                                            <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">
+                                                关闭
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                    </td></tr>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </table>
+</div>

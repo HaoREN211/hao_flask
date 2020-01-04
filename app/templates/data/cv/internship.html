@@ -1,0 +1,170 @@
+<div id="div_add_internship" class="panel panel-default">
+    <div class="panel-heading"><h3 style="text-align: left" class="panel-title">实习经历</h3></div>
+
+    <div class="panel-body">
+        <table class="table-hover table">
+        {% for current_enterprise in current_cv.get_start_time_ordered_internship() %}
+            <tr>
+                <td valign="top" width="10%">
+                    {% if current_enterprise.image_link %}
+                        <img src="{{ current_enterprise.image_link }}" style="width: 60px; height: 60px;">
+                    {% endif %}
+                </td>
+                <td>
+                    <table class="table-hover">
+                        <tr>
+                            <td>
+                                <font size="3" style="font-weight: 500">{{ current_enterprise.position }}</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <font>{{ current_enterprise.name }}（{{ current_enterprise.location }}）</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <font color="#a9a9a9">{{ current_enterprise.start_time.strftime("%Y") }}年{{ current_enterprise.start_time.strftime("%m") }}月{{ current_enterprise.start_time.strftime("%d") }}日---</font>
+                                {% if current_enterprise.is_active %}
+                                    <font color="#a9a9a9">至今</font>
+                                {% else %}
+                                    <font color="#a9a9a9">{{ current_enterprise.end_time.strftime("%Y") }}年{{ current_enterprise.end_time.strftime("%m") }}月{{ current_enterprise.end_time.strftime("%d") }}日</font>
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        {% for current_responsability in current_enterprise.get_ordered_responsibilities() %}
+                            <tr><td><font size="2">{{ current_responsability.order }}：{{ current_responsability.name }}</font></td></tr>
+                        {% endfor %}
+
+                        {% if not current_user.is_anonymous %}
+                            {% if current_user.id==current_cv.author.id %}
+                                {% if is_edited %}
+                                    <tr><td>
+
+                                        <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalCvInternshipResponsibilities{{ current_enterprise.id }}">
+                                            添加工作职责
+                                        </button>
+                                        <!-- 模态框（Modal） -->
+                                        <div class="modal fade" id="myModalCvInternshipResponsibilities{{ current_enterprise.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalCvMainAttributeLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                                        </button>
+                                                        <h4 class="modal-title" id="myModalCvMainAttributeLabel">
+                                                            添加工作职责
+                                                        </h4>
+                                                    </div>
+                                                    <form method="post" id="cv_responsibility_form" name="cv_responsibility_form">
+                                                        <div class="modal-body">
+                                                            {{ cv_responsibility_form.csrf_token() }}
+                                                            <div class="input-group col-sm-10">
+                                                                {{ cv_responsibility_form.enterprise_id(class="form-control", placeholder="公司主键", autocomplete="off", readonly="readonly", value=current_enterprise.id) }}
+                                                            </div>
+                                                            <br />
+                                                            <div class="input-group col-sm-10">
+                                                                <span class="input-group-addon">工作职责</span>
+                                                                {{ cv_responsibility_form.name(class="form-control", placeholder="工作职责", autocomplete="off") }}
+                                                            </div>
+                                                            <br />
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            {{ cv_responsibility_form.submit(class="btn btn-xs btn-primary") }}&nbsp;
+                                                            <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">
+                                                                关闭
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+                                    </td></tr>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </table>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+
+    {% if not current_user.is_anonymous %}
+        {% if current_user.id==current_cv.author.id %}
+            {% if is_edited %}
+                <div class="panel-footer">
+                    <div class="row">
+                        &nbsp;&nbsp;
+                        <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalCvInternshipEnterprises">
+                            添加实习经历
+                        </button>
+                        <!-- 模态框（Modal） -->
+                        <div class="modal fade" id="myModalCvInternshipEnterprises" tabindex="-1" role="dialog" aria-labelledby="myModalCvMainAttributeLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                        </button>
+                                        <h4 class="modal-title" id="myModalCvMainAttributeLabel">
+                                            添加实习经历
+                                        </h4>
+                                    </div>
+                                    <form method="post" id="cv_enterprise_form" name="cv_enterprise_form">
+                                        <div class="modal-body">
+                                                {{ cv_enterprise_form.csrf_token() }}
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">公司名称</span>
+                                                    {{ cv_enterprise_form.name(class="form-control", placeholder="公司名称", autocomplete="off") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    {{ cv_enterprise_form.is_internship(class="form-control", value=1, readonly="readonly") }}
+                                                </div>
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">图标链接</span>
+                                                    {{ cv_enterprise_form.image_link(class="form-control", placeholder="公司LoGo链接", autocomplete="off") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">是否在职</span>
+                                                    {{ cv_enterprise_form.is_active(class="form-control", placeholder="是否在职", autocomplete="off", type="checkbox") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">入职时间</span>
+                                                    {{ cv_enterprise_form.start_time(class="form-control", placeholder="入职时间", autocomplete="off", type="date") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">离职时间</span>
+                                                    {{ cv_enterprise_form.end_time(class="form-control", placeholder="离职时间", autocomplete="off", type="date") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">工作职位</span>
+                                                    {{ cv_enterprise_form.position(class="form-control", placeholder="工作职位", autocomplete="off") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">工作地点</span>
+                                                    {{ cv_enterprise_form.location(class="form-control", placeholder="工作地点", autocomplete="off") }}
+                                                </div>
+                                                <br />
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{ cv_enterprise_form.submit(class="btn btn-xs btn-primary") }}&nbsp;
+                                            <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">
+                                                关闭
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>

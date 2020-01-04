@@ -44,6 +44,7 @@ class User(UserMixin, db.Model):
 
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='comment_author', lazy='dynamic')
+    cvs = db.relationship('Cv', backref='author', lazy='dynamic')
 
     followed = db.relationship(
         'User', secondary=followers,

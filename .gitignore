@@ -5,3 +5,4 @@ migrations/*
 *.pyc
 logs/*
 config.py
+app/tests/restart_service.py

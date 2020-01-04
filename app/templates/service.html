@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    {{ super() }}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>服务</th>
+                <th>端口</th>
+                <th>进程</th>
+                <th>状态</th>
+            </tr>
+        </thead>
+        {% for service in services %}
+            <tr>
+                <td width="10%">
+                    {{ service.name }}
+                </td>
+                <td width="10%">
+                    {{ service.port }}
+                </td>
+                <td>
+                    {{ service.list_pid }}
+                </td>
+                <td width="10%">
+                    {% if service.is_active %}
+                        <button type="button" class="btn btn-success btn-xs" value="running">running</button>
+                    {% else %}
+                        <button type="button" class="btn btn-danger btn-xs" value="stop">stop</button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

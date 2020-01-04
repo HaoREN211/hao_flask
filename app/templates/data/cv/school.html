@@ -1,0 +1,112 @@
+<div id="div_add_school" class="panel panel-default">
+    <div class="panel-heading">
+        <h3 style="text-align: left" class="panel-title">
+            教育经历
+        </h3>
+    </div>
+
+    <div class="panel-body">
+        <table class="table-hover table">
+            {% for current_school in current_cv.get_start_time_ordered_schools() %}
+                <tr>
+                    <td valign="top" width="10%">
+                        {% if current_school.image_link  %}
+                            <img src="{{ current_school.image_link }}" style="width: 60px; height: 60px">
+                        {% endif %}
+                    </td>
+                    <td>
+                        <table class="table-hover">
+                            <tr>
+                                <td>
+                                    <font size="3" style="font-weight: 500">{{ current_school.name }}</font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <font>{{ current_school.specialty }} - {{ current_school.level }}</font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <font color="#a9a9a9">{{ current_school.start_time.strftime("%Y") }}年{{ current_school.start_time.strftime("%m") }}月{{ current_school.start_time.strftime("%d") }}日---</font>
+                                    <font color="#a9a9a9">{{ current_school.end_time.strftime("%Y") }}年{{ current_school.end_time.strftime("%m") }}月{{ current_school.end_time.strftime("%d") }}日</font>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    {% if not current_user.is_anonymous %}
+        {% if current_user.id==current_cv.author.id %}
+            {% if is_edited %}
+                <div class="panel-footer">
+                    <div class="row">
+                        &nbsp;&nbsp;
+                        <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalCvSchools">
+                            添加教育经历
+                        </button>
+                        <!-- 模态框（Modal） -->
+                        <div class="modal fade" id="myModalCvSchools" tabindex="-1" role="dialog" aria-labelledby="myModalCvMainAttributeLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                        </button>
+                                        <h4 class="modal-title" id="myModalCvMainAttributeLabel">
+                                            添加教育经历
+                                        </h4>
+                                    </div>
+                                    <form method="post" id="cv_school_form" name="cv_school_form">
+                                        <div class="modal-body">
+                                                {{ cv_school_form.csrf_token() }}
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">学校名称</span>
+                                                    {{ cv_school_form.name(class="form-control", placeholder="学校名称", autocomplete="off") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">校徽链接</span>
+                                                    {{ cv_school_form.image_link(class="form-control", placeholder="校徽链接", autocomplete="off") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">入学时间</span>
+                                                    {{ cv_school_form.start_time(class="form-control", placeholder="入学时间", autocomplete="off", type="date") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">毕业时间</span>
+                                                    {{ cv_school_form.end_time(class="form-control", placeholder="毕业时间", autocomplete="off", type="date") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">学位学历</span>
+                                                    {{ cv_school_form.level(class="form-control", placeholder="学位学历", autocomplete="off") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">学习专业</span>
+                                                    {{ cv_school_form.specialty(class="form-control", placeholder="学习专业", autocomplete="off") }}
+                                                </div>
+                                                <br />
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{ cv_school_form.submit(class="btn btn-xs btn-primary") }}&nbsp;
+                                            <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">
+                                                关闭
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+</div>

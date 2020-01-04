@@ -4,8 +4,9 @@
 # IDE：PyCharm
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, DateField, BooleanField, IntegerField
+from wtforms import StringField, SubmitField, DateField, BooleanField, IntegerField, HiddenField, SelectField
 from wtforms.validators import DataRequired
+# from app.models.Cv import CvEnterprise
 
 class CvMainAttributeForm(FlaskForm):
     attribute_key = StringField("属性键", validators=[DataRequired()])
@@ -29,20 +30,26 @@ class CvEnterpriseForm(FlaskForm):
     end_time = DateField("离职时间", validators=[DataRequired()])
     position = StringField("职位", validators=[DataRequired()])
     location = StringField("工作地点", validators=[DataRequired()])
-    is_internship = IntegerField("是否是实习经历", validators=[DataRequired()])
+    is_internship = HiddenField("是否是实习经历", validators=[DataRequired()])
     submit = SubmitField("确认")
 
 
 class CvResponsibilityForm(FlaskForm):
-    enterprise_id = IntegerField("公司主键", validators=[DataRequired()])
+    enterprise_id = HiddenField("公司主键", validators=[DataRequired()])
     name = StringField("工作职责描述", validators=[DataRequired()])
     submit = SubmitField("确认")
 
 
 class CvProjectForm(FlaskForm):
-    enterprise_id = IntegerField("公司主键", validators=[DataRequired()])
+    enterprise_id = SelectField("公司", validators=[DataRequired()], coerce=int, choices=[(1, "test")])
     name = StringField("项目名称", validators=[DataRequired()])
     role = StringField("职位职责", validators=[DataRequired()])
     start_time = DateField("入职时间", validators=[DataRequired()])
-    end_time = DateField("离职时间", validators=[DataRequired()])
+    end_time = DateField("离职时间")
     submit = SubmitField("确认")
+
+class CvExperienceForm(FlaskForm):
+    submit = SubmitField("确认")
+    enterprise_id = HiddenField("公司", validators=[DataRequired()])
+    project_id = HiddenField("项目", validators=[DataRequired()])
+    name = StringField("项目经验描述", validators=[DataRequired()])

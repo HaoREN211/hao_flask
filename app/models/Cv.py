@@ -11,17 +11,16 @@ class Cv(db.Model):
     id = db.Column(BIGINT(unsigned=True), primary_key=True, comment="简历主键")
     name = db.Column(db.String(100), nullable=False, comment="简历名称")
     user_id = db.Column(BIGINT(unsigned=True), db.ForeignKey("user.id"), comment="作者主键")
+    image_link = db.Column(db.String(500), nullable=True, comment="头像链接")
     is_delete = db.Column(db.Boolean, default=False, comment="是否删除")
     create_time = db.Column(db.DateTime, default=datetime.utcnow(), comment="创建时间")
     update_time = db.Column(db.DateTime, default=datetime.utcnow(), comment="更新时间")
     delete_time = db.Column(db.DateTime, comment="删除时间")
 
-    author = db.relationship('User', backref='cvs')
     main_attributes = db.relationship('CvMainAttribute', backref='cv')
     schools = db.relationship('CvSchool', backref='cv')
     enterprises = db.relationship('CvEnterprise', backref='cv')
     projects = db.relationship('CvProject', backref='cv')
-
 
     # 新增主属性的order值
     def calculate_max_main_attribute_order(self):
@@ -83,6 +82,7 @@ class CvEnterprise(db.Model):
     is_internship = db.Column(db.Boolean, default=False, comment="是否是实习经验")
 
     responsibilities = db.relationship('CvResponsibility', backref='enterprise')
+    projects = db.relationship('CvProject', backref='enterprise')
 
     # 新增工作职责的order值
     def calculate_max_main_responsibility_order(self):
@@ -111,3 +111,24 @@ class CvProject(db.Model):
     role = db.Column(db.String(100), comment="职位")
     start_time = db.Column(db.Date, comment="开始时间")
     end_time = db.Column(db.Date, comment="结束时间")
+
+    experiences = db.relationship('CvExperience', backref='project')
+
+    # 获取按照顺序排列的项目经验
+    def get_ordered_experiences(self):
+        return sorted(self.experiences, key=lambda x: x.order, reverse=False)
+
+    # 新增项目经验的order值
+    def calculate_max_main_experience_order(self):
+        if len(self.experiences) == 0:
+            return 1
+        list_experience_order = [x.order for x in self.experiences]
+        return max(list_experience_order) + 1
+
+class CvExperience(db.Model):
+    id = db.Column(BIGINT(unsigned=True), primary_key=True, comment="简历项目经验主键")
+    cv_id = db.Column(BIGINT(unsigned=True), db.ForeignKey("cv.id"), comment="简历主键", nullable=False)
+    enterprise_id = db.Column(BIGINT(unsigned=True), db.ForeignKey("cv_enterprise.id"), comment="公司主键", nullable=False)
+    project_id = db.Column(BIGINT(unsigned=True), db.ForeignKey("cv_project.id"), comment="项目主键", nullable=False)
+    order = db.Column(db.Integer, comment="项目经验顺序")
+    name = db.Column(db.String(200), comment="项目经验描述")

@@ -1,0 +1,160 @@
+<div id="div_add_project" class="panel panel-default">
+    <div class="panel-heading"><h3 style="text-align: left" class="panel-title">项目经历</h3></div>
+
+    <div class="panel-body">
+        <table class="table-hover table">
+        {% for current_project in current_cv.get_start_time_ordered_project() %}
+            <tr>
+                <td valign="top" width="10%">
+                    {% if current_project.enterprise.image_link %}
+                        <img src="{{ current_project.enterprise.image_link }}" style="width: 60px; height: 60px;">
+                    {% endif %}
+                </td>
+                <td>
+                    <table class="table-hover">
+                        <tr>
+                            <td>
+                                <font size="3" style="font-weight: 500">{{ current_project.name }}</font>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <font>{{ current_project.role }}（{{ current_project.enterprise.name }}）</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <font>{{ current_project.enterprise.location }}</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <font color="#a9a9a9">{{ current_project.start_time.strftime("%Y") }}年{{ current_project.start_time.strftime("%m") }}月{{ current_project.start_time.strftime("%d") }}日---</font>
+                                <font color="#a9a9a9">{{ current_project.end_time.strftime("%Y") }}年{{ current_project.end_time.strftime("%m") }}月{{ current_project.end_time.strftime("%d") }}日</font>
+                            </td>
+                        </tr>
+
+                        {% for current_experience in current_project.get_ordered_experiences() %}
+                            <tr><td><font size="2">{{ current_experience.order }}：{{ current_experience.name }}</font></td></tr>
+                        {% endfor %}
+
+                        {% if not current_user.is_anonymous %}
+                            {% if current_user.id==current_cv.author.id %}
+                                {% if is_edited %}
+                                    <tr><td>
+                                        <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalCvExperiences{{ current_project.id }}">
+                                            添加项目经验
+                                        </button>
+                                        <!-- 模态框（Modal） -->
+                                        <div class="modal fade" id="myModalCvExperiences{{ current_project.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalCvMainAttributeLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                                        </button>
+                                                        <h4 class="modal-title" id="myModalCvMainAttributeLabel">
+                                                            添加项目经验
+                                                        </h4>
+                                                    </div>
+                                                    <form method="post" id="cv_experience_form" name="cv_experience_form">
+                                                        <div class="modal-body">
+                                                            {{ cv_experience_form.csrf_token() }}
+                                                            <div class="input-group col-sm-10">
+                                                                {{ cv_experience_form.enterprise_id(class="form-control", value=current_project.enterprise_id) }}
+                                                            </div>
+                                                            <div class="input-group col-sm-10">
+                                                                {{ cv_experience_form.project_id(class="form-control",  value=current_project.id) }}
+                                                            </div>
+                                                            <div class="input-group col-sm-10">
+                                                                <span class="input-group-addon">项目经验</span>
+                                                                {{ cv_experience_form.name(class="form-control", placeholder="项目经验", autocomplete="off") }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            {{ cv_experience_form.submit(class="btn btn-xs btn-primary") }}&nbsp;
+                                                            <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">
+                                                                关闭
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+                                    </td></tr>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </table>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+
+    {% if not current_user.is_anonymous %}
+        {% if current_user.id==current_cv.author.id %}
+            {% if is_edited %}
+                <div class="panel-footer">
+                    <div class="row">
+                        &nbsp;&nbsp;
+                        <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModalCvProjects">
+                            添加项目经历
+                        </button>
+                        <!-- 模态框（Modal） -->
+                        <div class="modal fade" id="myModalCvProjects" tabindex="-1" role="dialog" aria-labelledby="myModalCvMainAttributeLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                                        </button>
+                                        <h4 class="modal-title" id="myModalCvMainAttributeLabel">
+                                            添加项目经历
+                                        </h4>
+                                    </div>
+
+                                    <form method="post" id="cv_project_form" name="cv_project_form">
+                                        <div class="modal-body">
+                                                {{ cv_project_form.csrf_token() }}
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">项目名称</span>
+                                                    {{ cv_project_form.name(class="form-control", placeholder="项目名称", autocomplete="off") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">所在公司</span>
+                                                    {{ cv_project_form.enterprise_id(class="form-control") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">项目岗位</span>
+                                                    {{ cv_project_form.role(class="form-control", placeholder="项目岗位", autocomplete="off") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">开始时间</span>
+                                                    {{ cv_project_form.start_time(class="form-control", placeholder="开始时间", autocomplete="off", type="date") }}
+                                                </div>
+                                                <br />
+                                                <div class="input-group col-sm-10">
+                                                    <span class="input-group-addon">结束时间</span>
+                                                    {{ cv_project_form.end_time(class="form-control", placeholder="结束时间", autocomplete="off", type="date") }}
+                                                </div>
+                                                <br />
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{ cv_project_form.submit(class="btn btn-xs btn-primary") }}&nbsp;
+                                            <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">
+                                                关闭
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>

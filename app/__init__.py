@@ -53,19 +53,19 @@ def create_app(config_class=Config):
     from app.data import bp as data_bp
     app.register_blueprint(data_bp, url_prefix='/data')
 
-    if not app.debug:
-        if not os.path.exists('logs'):
-            os.mkdir('logs')
-        # 日志文件的大小限制为1000KB，并只保留最后的十个日志文件作为备份。
-        file_handler = RotatingFileHandler('logs/microblog.log', maxBytes=1024000,
-                                           backupCount=10)
-        file_handler.setFormatter(logging.Formatter(
-            '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-        file_handler.setLevel(logging.INFO)
-        app.logger.addHandler(file_handler)
+    # if not app.debug:
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
+    # 日志文件的大小限制为1000KB，并只保留最后的十个日志文件作为备份。
+    file_handler = RotatingFileHandler('logs/microblog.log', maxBytes=1024000,
+                                       backupCount=10)
+    file_handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
 
-        app.logger.setLevel(logging.INFO)
-        app.logger.info('Microblog startup')
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('Microblog startup')
 
     return app
 

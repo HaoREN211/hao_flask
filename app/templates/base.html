@@ -137,6 +137,11 @@
                                     <a href="{{ url_for('data.cvs') }}">简历</a>
                                 </li>
                             {% endif %}
+                            {% if current_user.is_admin %}
+                                <li>
+                                    <a href="{{ url_for('main.service') }}">服务</a>
+                                </li>
+                            {% endif %}
                             <li>
                                 <a href="{{ url_for('auth.logout') }}">登出</a>
                             </li>
