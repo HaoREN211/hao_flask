@@ -3,14 +3,32 @@
 # 时间：2019/12/29 10:00
 # IDE：PyCharm
 
+from config import wkhtmltopdf_path
 from app.data import bp
 from app import db
 from flask_login import login_required, current_user
-from flask import render_template, request, url_for, redirect, current_app
+from flask import render_template, request, url_for, redirect, current_app, send_from_directory
 from app.models.Cv import Cv, CvMainAttribute, CvSchool, CvEnterprise, CvResponsibility, CvProject, CvExperience
 from config import Config
 from app.data.forms.Cv import (CvMainAttributeForm, CvSchoolForm, CvEnterpriseForm, CvResponsibilityForm,
                                CvProjectForm, CvExperienceForm)
+import pdfkit
+import os
+
+@bp.route('/cv_export/<id>', methods=['GET', 'POST'])
+def cv_export(id):
+    file_path = os.path.join(current_app.root_path, "static/cv/cv_REN_Hao_" + str(id) + ".pdf")
+    if not os.path.exists(os.path.dirname(file_path)):
+        os.makedirs(os.path.dirname(file_path))
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    url="127.0.0.1:5000"+str(url_for("data.cv", id=id))
+
+    pdfkit.from_url(url,
+                    file_path,
+                    configuration=pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path))
+    return send_from_directory(os.path.dirname(file_path), os.path.basename(file_path), as_attachment=True)
+
 
 @bp.route('/cvs', methods=['GET', 'POST'])
 @login_required

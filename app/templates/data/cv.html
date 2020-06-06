@@ -3,6 +3,8 @@
 {% block app_content %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrapChanges.css') }}">
 
+    <button class="btn btn-primary" onclick=window.location.href="{{ url_for('data.cv_export', id=current_cv.id) }}">打印简历</button>
+
     <h1 style="text-align: center">{{ current_cv.name }}</h1>
 
     {% if not current_user.is_anonymous %}
@@ -16,15 +18,15 @@
     <hr />
 
     <div class="row">
-        <div class="col-sm-3" style="padding-left: 0">
+        <div class="col-xs-3" style="padding-left: 0;">
             {% include 'data/cv/main_attribute.html' %}
             <hr />
         </div>
-        <div class="col-sm1">
-            <div style='width:1px;border:1px solid darkgray;float:left;height:500px'>
+        <div class="col-xs">
+            <div  style='width:1px;border:1px solid darkgray;float:left;height:500px'>
             </div>
         </div>
-        <div class="col-sm-8" style="padding-left: 5%">
+        <div class="col-xs-8" style="padding-left: 5%;">
             {#教育经历#}
             {% include 'data/cv/school.html' %}
 
@@ -33,7 +35,11 @@
 
             {#实习经历#}
             {% include 'data/cv/internship.html' %}
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="padding-left: 5%">
+        <div style="padding-left: 5%">
             {#项目经历#}
             {% include 'data/cv/project.html' %}
         </div>
